@@ -1,0 +1,7 @@
+{
+  "name": "SonsDeTaVille",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
