@@ -1,13 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { ReplaySubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { ReplaySubject, Observable, from } from "rxjs";
+import { delayWhen, map } from "rxjs/operators";
+import { Storage } from "@ionic/storage";
 
 import { AuthResponse } from "../models/auth-response";
 import { User } from "../models/user";
 import { AuthRequest } from "../models/auth-request";
-
-const API_URL = "localhost:3000";
+import { environment } from "src/environments/environment";
 
 /**
  * Authentication service for login/logout.
@@ -16,10 +16,16 @@ const API_URL = "localhost:3000";
 export class AuthService {
   #auth$: ReplaySubject<AuthResponse | undefined>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storage: Storage) {
     this.#auth$ = new ReplaySubject(1);
-    // Emit an empty value on startup for now
-    this.#auth$.next();
+    this.storage.get('auth').then((auth) => {
+      // Emit the loaded value into the observable stream.
+      this.#auth$.next(auth);
+    });
+  }
+
+  private saveAuth$(auth: AuthResponse): Observable<void> {
+    return from(this.storage.set('auth', auth));
   }
 
   isAuthenticated$(): Observable<boolean> {
@@ -35,8 +41,9 @@ export class AuthService {
   }
 
   logIn$(authRequest: AuthRequest): Observable<User> {
-    const authUrl = `${API_URL}/auth/login`;
+    const authUrl = `${environment.apiUrl}/auth/login`;
     return this.http.post<AuthResponse>(authUrl, authRequest).pipe(
+      delayWhen((auth) => this.saveAuth$(auth)),
       map((auth) => {
         this.#auth$.next(auth);
         console.log(`User ${auth.user.username} logged in`);
@@ -47,6 +54,8 @@ export class AuthService {
 
   logOut(): void {
     this.#auth$.next(null);
-    console.log("User logged out");
+
+    this.storage.remove('auth');
+    console.log('User logged out');
   }
 }
