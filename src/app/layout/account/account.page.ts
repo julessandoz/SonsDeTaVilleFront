@@ -21,6 +21,6 @@ export class AccountPage implements OnInit {
   logOut() {
     console.log("logging out...");
     this.auth.logOut();
-    this.router.navigateByUrl("/auth/login");
+    this.router.navigateByUrl("/login");
   }
 }
