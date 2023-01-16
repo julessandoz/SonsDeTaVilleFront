@@ -1,6 +1,7 @@
 import { Comment } from './../models/comment';
 import { Component, Input, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-comment',
@@ -10,23 +11,21 @@ import { DatePipe } from '@angular/common';
 })
 export class CommentComponent implements OnInit {
 
-  
+    comments : any = [];
+    soundId: string = "638da12d40ae1f0493231fcc";
 
-  @Input() comment: Comment;
-  // comment = {
-  //   _id: '1',
-  //   author: {
-  //     id: '1',
-  //     username: 'julesSandoz',
-  //     email: 'test@example.com',
-  //     admin: false
-  //   },
-  //   comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl nec ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl eu nisl.",
-  //   date: new Date()
-  // };
-  commentDate: string;
+    constructor(private http: HttpClient) {
+    }
 
-  constructor(private datePipe: DatePipe){
+    ngOnInit() {
+        this.http.get(`https://sons-de-ta-ville.onrender.com/comments?sound=${this.soundId}`).subscribe(data => {
+        console.log(data)
+        this.comments = data;
+      });
+    }
+}
+
+ /*  constructor(private datePipe: DatePipe){
     if(this.comment.date.getDate() == new Date().getDate() && this.comment.date.getMonth() == new Date().getMonth() && this.comment.date.getFullYear() == new Date().getFullYear()){
       this.commentDate = datePipe.transform(this.comment.date, 'HH:mm');
     } else {
@@ -36,7 +35,5 @@ export class CommentComponent implements OnInit {
         this.commentDate = datePipe.transform(this.comment.date, 'dd/MM/yyyy');
       }
     }
-  }
+  } */
 
-  ngOnInit() {}
-}
