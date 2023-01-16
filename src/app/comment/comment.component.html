@@ -1,4 +1,4 @@
-<div class="comment" :id="{{comment._id}}">
+<div *ngFor="let comment of comments" class="comment" :id="{{comment._id}}">
   <div class="comment-author">
     {{ comment.author.username }}
   </div>
@@ -6,6 +6,12 @@
     {{ comment.comment }}
   </div>
   <div class="comment-date">
-    {{ commentDate }}
+    29.03
   </div>
 </div>
+
+<!-- <ul>
+  <li *ngFor="let comment of comments">
+    {{ comment.comment }} - {{ comment.author.username }}
+  </li>
+</ul> -->
