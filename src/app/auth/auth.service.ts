@@ -36,6 +36,10 @@ export class AuthService {
     return this.#auth$.pipe(map((auth) => auth?.user));
   }
 
+  getUserName$(): Observable<String> {
+    return this.#auth$.pipe(map((auth) => auth?.user.username));
+  }
+
   getToken$(): Observable<string> {
     return this.#auth$.pipe(map((auth) => auth?.token));
   }

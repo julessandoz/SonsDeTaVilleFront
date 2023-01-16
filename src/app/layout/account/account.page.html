@@ -1,13 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Account</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button (click)="logOut()">
-        <ion-icon name="log-out"></ion-icon>
+      <ion-button>
+        <ion-icon name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
+
+    <ion-title>Profil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding"> Here's an account! </ion-content>
+<ion-content class="ion-padding ion-text-center">
+  <h1>{{user?.username}}</h1>
+  <ion-grid>
+    <ion-row>
+      <h3>Mes sons</h3>
+    </ion-row>
+    <ion-row>
+      <div class="ion-text-center">
+        <p>{{user?.soundsPosted}} sons</p>
+      </div>
+      <div class="ion-text-center">
+        <p>{{user?.commentsPosted}} commentaires</p>
+      </div>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      (click)="logOut()"
+      fill="outline"
+      expand="block"
+      class="ion-text-center ion-margin-horizontal ion-width-half"
+    >
+      Déconnexion
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

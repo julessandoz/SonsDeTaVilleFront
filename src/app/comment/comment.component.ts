@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit {
         this.http.get(`https://sons-de-ta-ville.onrender.com/comments?sound=${this.soundId}`).subscribe(data => {
         console.log(data)
         this.comments = data;
+
       });
     }
 }
