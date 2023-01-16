@@ -12,6 +12,8 @@ import { IonicStorageModule } from "@ionic/storage-angular";
 import { AuthInterceptorService } from "./auth/auth-interceptor.service";
 
 import { DatePipe } from '@angular/common';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { map } from 'leaflet';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +23,7 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
+    LeafletModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -34,3 +37,4 @@ import { DatePipe } from '@angular/common';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+

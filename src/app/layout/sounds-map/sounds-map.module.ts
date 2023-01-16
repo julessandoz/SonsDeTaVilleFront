@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SoundsMapPageRoutingModule } from './sounds-map-routing.module';
 
 import { SoundsMapPage } from './sounds-map.page';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SoundsMapPageRoutingModule
+    SoundsMapPageRoutingModule,
+    LeafletModule
   ],
   declarations: [SoundsMapPage]
 })
