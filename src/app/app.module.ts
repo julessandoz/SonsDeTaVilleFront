@@ -11,6 +11,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { IonicStorageModule } from "@ionic/storage-angular";
 import { AuthInterceptorService } from "./auth/auth-interceptor.service";
 
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,6 +29,7 @@ import { AuthInterceptorService } from "./auth/auth-interceptor.service";
       useClass: AuthInterceptorService,
       multi: true,
     },
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })
