@@ -1,0 +1,17 @@
+.category-button {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid black;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+ }
+
+ .category-button:active {
+    background-color: rgba(144, 50, 61, 0.5);
+    font-weight: bold;
+ }
+ 
