@@ -3,7 +3,6 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="#"></ion-back-button>
     </ion-buttons>
-
     <ion-buttons slot="end">
       <ion-button href="account-param">
         <ion-icon name="settings"></ion-icon>
@@ -12,3 +11,22 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-row>
+    <ion-col>
+      <h1>{{user?.username}}</h1>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <p>{{user?.soundsPosted}} sons</p>
+    </ion-col>
+    <ion-col>
+      <p>{{user?.commentsPosted}} commentaires</p>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half">
+  Déconnexion
+</ion-button>
