@@ -3,13 +3,17 @@ import { Router } from "@angular/router";
 import { AuthService } from "src/app/auth/auth.service";
 import { HttpClient } from '@angular/common/http';
 
-
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.page.html',
-  styleUrls: ['./account.page.scss'],
+  selector: 'app-account-param',
+  templateUrl: './account-param.page.html',
+  styleUrls: ['./account-param.page.scss'],
 })
-export class AccountPage implements OnInit {
+export class AccountParamPage implements OnInit {
+
+  currentPwd: String;
+  newPwd: String;
+  newEmail: String;
+  validNewPwd: String;
 
   user: any;
 
@@ -18,7 +22,7 @@ export class AccountPage implements OnInit {
     // Inject the router
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.auth.getUser$().subscribe(data => {
@@ -29,11 +33,15 @@ export class AccountPage implements OnInit {
     })
   }
 
+  updateUser(username: String, newEmail: String){
 
+    const email = newEmail;
+    const data = { email: email };
 
-  logOut() {
-    console.log("logging out...");
-    this.auth.logOut();
-    this.router.navigateByUrl("/login");
+    this.http.patch(`https://sons-de-ta-ville.onrender.com/users/${username}`, data)
+    .subscribe((response) => {
+      console.log(response);
+    });
   }
+
 }

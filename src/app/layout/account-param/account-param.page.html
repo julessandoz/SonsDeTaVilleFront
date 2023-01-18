@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" href="account">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>Paramètres</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <b>Nom d'utilisateur</b>
+        <p>{{user?.username}}</p>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+        <b>Adresse e-mail</b>
+        <p>{{user?.email}}</p>
+        <!-- <ion-button>
+          <ion-icon name="pencil-outline"></ion-icon>
+        </ion-button> -->
+        <ion-input  placeholder="Nouvel e-mail" [(ngModel)]="newEmail" type="text"></ion-input>
+
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+        <b>Modifier le mot de passe</b><br><br>
+        <ion-label position="stacked">Mot de passe actuel</ion-label>
+        <ion-input placeholder="Mot de passe" [(ngModel)]="currentPwd" type="text"></ion-input>
+        <ion-label position="stacked">Nouveau mot de passe</ion-label>
+        <ion-input placeholder="Nouveau mot de passe" [(ngModel)]="newPwd" type="text"></ion-input>
+        <ion-label position="stacked">Confirmer le mot de passe</ion-label>
+        <ion-input placeholder="Nouveau mot de passe" [(ngModel)]="validNewPwd" type="text"></ion-input>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="updateUser(user.username, newEmail)" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half">
+          Sauvergarder les modifications
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+
+</ion-content>
