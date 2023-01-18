@@ -1,3 +1,23 @@
 .map {
     height: 100%;
   }
+
+
+  ion-segment-button {
+    --indicator-color: #90323D;
+  }
+  ion-segment-button.md {
+    --color: #90323D;
+    --color-checked: #fff;
+    --indicator-height: 4px;
+    --background: #fff;
+    --background-checked: #90323D;
+  }
+  ion-segment-button.ios {
+    --color: #90323D;
+    --color-checked: #fff;
+    --indicator-height: 4px;
+    --background: #fff;
+    --background-checked: #90323D;
+    --border-radius: 20px;
+  }

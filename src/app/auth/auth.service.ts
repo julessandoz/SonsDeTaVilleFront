@@ -1,3 +1,4 @@
+import { RegisterRequest } from './../models/register-request';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ReplaySubject, Observable, from } from "rxjs";
@@ -8,6 +9,7 @@ import { AuthResponse } from "../models/auth-response";
 import { User } from "../models/user";
 import { AuthRequest } from "../models/auth-request";
 import { environment } from "src/environments/environment";
+import { RegisterResponse } from '../models/register-response';
 
 /**
  * Authentication service for login/logout.
@@ -56,6 +58,14 @@ export class AuthService {
     );
   }
 
+  register$(registerRequest: RegisterRequest): Observable<any> {
+    const registerUrl = `${environment.apiUrl}/users`;
+    return this.http.post<RegisterResponse>(registerUrl, registerRequest).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
   logOut(): void {
     this.#auth$.next(null);
 

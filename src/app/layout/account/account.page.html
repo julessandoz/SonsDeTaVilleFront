@@ -12,32 +12,3 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding ion-text-center">
-  <h1>{{user?.username}}</h1>
-  <ion-grid>
-    <ion-row>
-      <h3>Mes sons</h3>
-    </ion-row>
-    <ion-row>
-      <div class="ion-text-center">
-        <p>{{user?.soundsPosted}} sons</p>
-      </div>
-      <div class="ion-text-center">
-        <p>{{user?.commentsPosted}} commentaires</p>
-      </div>
-    </ion-row>
-  </ion-grid>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-button
-      (click)="logOut()"
-      fill="outline"
-      expand="block"
-      class="ion-text-center ion-margin-horizontal ion-width-half"
-    >
-      Déconnexion
-    </ion-button>
-  </ion-toolbar>
-</ion-footer>

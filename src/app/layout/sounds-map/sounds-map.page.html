@@ -1,9 +1,19 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>SoundsMap</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content class="ion-padding"> Let's find sounds! </ion-content>
+<!-- <ion-content class="ion-padding"> Let's find sounds! </ion-content> -->
+
+<ion-segment value="custom">
+  <ion-segment-button value="custom">
+    <ion-label>Carte</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="segment">
+    <ion-label>Liste</ion-label>
+  </ion-segment-button>
+</ion-segment>
 
 <div class="map" leaflet [leafletOptions]="mapOptions"></div>
+

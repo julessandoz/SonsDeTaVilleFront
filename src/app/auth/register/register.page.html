@@ -1,0 +1,101 @@
+<ion-header>
+</ion-header>
+
+<ion-content class="ion-align-self-center ion-padding-horizontal">
+
+  <ion-row class="ion-justify-content-center" id="loginLogoContainer" >
+    <img src="../../../assets/img/logo.svg" alt="">
+  </ion-row>
+
+  <form #registerForm="ngForm" (submit)="onSubmit(registerForm)">
+    <ion-list>
+      <!-- Username input -->
+      <ion-item>
+        <ion-label position="stacked">Nom d'utilisateur</ion-label>
+        <ion-input
+          inputmode="text"
+          #username="ngModel"
+          required="true"
+          name="username"
+          [(ngModel)]="registerRequest.username"
+        ></ion-input>
+      </ion-item>
+      <!-- Email input -->
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input
+          inputmode="text"
+          #email="ngModel"
+          required="true"
+          name="email"
+          [(ngModel)]="registerRequest.email"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Error message displayed if the username is invalid -->
+      <ion-item lines="none" *ngIf="email.invalid && email.touched">
+        <ion-text color="danger">Email requis.</ion-text>
+      </ion-item>
+
+      <!-- Password input -->
+      <ion-item>
+        <ion-label position="stacked">Mot de passe</ion-label>
+        <ion-input
+          inputmode="text"
+          #password="ngModel"
+          required="true"
+          type="password"
+          name="password"
+          [(ngModel)]="registerRequest.password"
+        ></ion-input>
+      </ion-item>
+      <!-- Error message displayed if the password is invalid -->
+      <ion-item lines="none" *ngIf="password.invalid && password.touched">
+        <ion-text color="danger">Mot de passe requis.</ion-text>
+      </ion-item>
+
+      <!-- Password Confirmation input -->
+      <ion-item>
+        <ion-label position="stacked">Confirmer le mot de passe</ion-label>
+        <ion-input
+          inputmode="text"
+          #confirmPassword="ngModel"
+          required="true"
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="registerRequest.confirmPassword"
+        ></ion-input>
+      </ion-item>
+      <!--Error message displayed if the confirmation password is invalid -->
+      <ion-item lines="none" *ngIf="confirmPassword.value !== password.value">
+        <ion-text color="danger">Les deux champs mot de passe doivent être identiques</ion-text>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <!-- Submit button -->
+      <ion-button color="primary" type="submit" expand="block" [disabled]="registerForm.invalid"
+        >S'inscrire</ion-button
+      >
+
+      <!-- Error message displayed if the username is taken -->
+      <ion-text color="danger" *ngIf="usernameTaken"
+        >Ce nom d'utilisateur est déjà utilisé</ion-text
+      >
+      <!-- Error message displayed if the email is taken -->
+      <ion-text color="danger" *ngIf="emailTaken"
+        >Cette adresse email est déjà utilisée</ion-text
+      >
+      <!-- Error message displayed if the password doesn't meet the requirements -->
+      <ion-text color="danger" *ngIf="badPassword"
+        >Le mot de passe doit faire au moins 8 caractères</ion-text
+      >
+
+    </div>
+  </form>
+  <div>
+    <ion-text class="ion-padding-left">
+      Vous avez déjà un compte? <a href="/login">Se connecter</a>
+    </ion-text>
+  </div>
+</ion-content>
