@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AccountPageRoutingModule } from './account-routing.module';
 
 import { AccountPage } from './account.page';
+import { CategoryButtonComponent } from 'src/app/category-button/category-button.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { AccountPage } from './account.page';
     IonicModule,
     AccountPageRoutingModule
   ],
-  declarations: [AccountPage]
+  declarations: [AccountPage, CategoryButtonComponent]
 })
 export class AccountPageModule {}
