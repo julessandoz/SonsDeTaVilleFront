@@ -14,6 +14,7 @@ import { AccountParamPage } from './account-param.page';
     FormsModule,
     IonicModule,
     AccountParamPageRoutingModule
+
   ],
   declarations: [AccountParamPage]
 })
