@@ -6,7 +6,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { SoundPlayerComponent } from './sound-player/sound-player.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { IonicStorageModule } from "@ionic/storage-angular";
@@ -17,7 +16,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { map } from 'leaflet';
 
 @NgModule({
-  declarations: [AppComponent, SoundPlayerComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

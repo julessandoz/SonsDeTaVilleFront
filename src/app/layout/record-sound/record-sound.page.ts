@@ -7,12 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./record-sound.page.scss'],
 })
 export class RecordSoundPage implements OnInit {
-
-  constructor(
-
-  ) { }
-
-  ngOnInit() {
-  }
-
+  
+    constructor() { }
+  
+    ngOnInit() {
+    }
 }

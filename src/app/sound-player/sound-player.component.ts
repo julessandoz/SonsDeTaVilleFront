@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 
 @Component({
@@ -12,6 +12,8 @@ export class SoundPlayerComponent implements OnInit {
   wavesurfer: WaveSurfer;
   isPlaying = false
   duration: number;
+  category: string = "Personnes";
+  @Input() showCategory: boolean = false;
 
   ngOnInit() {
     this.wavesurfer = WaveSurfer.create({
@@ -19,9 +21,9 @@ export class SoundPlayerComponent implements OnInit {
       waveColor: '#040303',
       progressColor: '#90323D',
       cursorColor: '#ffffff',
-      scrollParent: true,
+      // scrollParent: true,
       barWidth: 3,
-      fillParent: true,
+      // fillParent: true,
       barHeight: 2.5,
     });
 

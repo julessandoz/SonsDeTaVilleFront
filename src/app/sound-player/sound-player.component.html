@@ -1,11 +1,14 @@
 <div class="sound-player-container">
-  <div class="sound-container">
-    <div class="play-pause-button">
-      <div (click)="playPause()" class="play-button">
+  <div [ngClass]="{'sound-container-3columns': showCategory, 'sound-container-2columns': !showCategory}">
+    <div (click)="playPause()" class="play-pause-button">
         <ion-icon name="play" *ngIf="!isPlaying"></ion-icon>
         <ion-icon name="pause" size="large" *ngIf="isPlaying"></ion-icon>
-      </div>
     </div>
-    <div id="waveform" class="waveform"></div>
+    <div class="audio-player">
+      <div id="waveform" class="waveform"></div>
+    </div>
+    <div class="category" *ngIf="showCategory">
+      <app-category-button [categoryName]="category" [backgroundColor]="'red'"></app-category-button>
+    </div>
   </div>
 </div>
