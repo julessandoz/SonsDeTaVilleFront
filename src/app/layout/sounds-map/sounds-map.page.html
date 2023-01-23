@@ -18,11 +18,16 @@
 <ion-content>
 <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions">
 </div>
-  <div *ngIf="!isMapVisible">
-    <div *ngFor="let sound of sounds">
-      {{sound}}
-    </div>
-  </div>
+  <ion-grid id="soundsListContainer" *ngIf="!isMapVisible">
+    <ion-row class="soundsElement" *ngFor="let sound of sounds">
+      <ion-col class="soundPlayer">
+        <app-sound-player></app-sound-player>
+      </ion-col>
+      <!-- <ion-col class="categoryButton">
+        <app-category-button [backgroundColor]="'red'" [categoryName]="sound.category.name"></app-category-button>
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 

@@ -8,6 +8,8 @@ import { SoundsMapPageRoutingModule } from './sounds-map-routing.module';
 
 import { SoundsMapPage } from './sounds-map.page';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet'
+import { SoundPlayerModule } from 'src/app/sound-player/sound-player.module';
+import { CategoryButtonModule } from 'src/app/category-button/category-button.module';
 
 @NgModule({
   imports: [
@@ -15,7 +17,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet'
     FormsModule,
     IonicModule,
     SoundsMapPageRoutingModule,
-    LeafletModule
+    LeafletModule,
+    SoundPlayerModule,
+    CategoryButtonModule
   ],
   declarations: [SoundsMapPage]
 })

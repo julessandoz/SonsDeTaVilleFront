@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LayoutPageRoutingModule } from './layout-routing.module';
 
 import { LayoutPage } from './layout.page';
-import { SoundPlayerComponent } from '../sound-player/sound-player.component';
+
 
 
 @NgModule({
@@ -17,6 +17,6 @@ import { SoundPlayerComponent } from '../sound-player/sound-player.component';
     IonicModule,
     LayoutPageRoutingModule,
   ],
-  declarations: [LayoutPage, SoundPlayerComponent]
+  declarations: [LayoutPage]
 })
 export class LayoutPageModule {}

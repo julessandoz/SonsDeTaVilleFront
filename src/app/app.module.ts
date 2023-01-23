@@ -16,7 +16,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { map } from 'leaflet';
 
 @NgModule({
-  declarations: [AppComponent, /* SoundPlayerComponent */],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

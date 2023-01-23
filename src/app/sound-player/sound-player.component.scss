@@ -1,0 +1,15 @@
+.sound-container{
+  display: flex;
+  flex-direction: row;
+
+  .play-pause-button{
+    margin-top: auto;
+  }
+
+  #waveform{
+    width: 70%;
+  }
+  wave{
+    display: flex;
+  }
+}
