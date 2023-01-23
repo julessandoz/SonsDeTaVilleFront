@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SoundPlayerComponent } from 'src/app/sound-player/sound-player.component';
 
 
 @Component({
