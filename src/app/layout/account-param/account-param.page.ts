@@ -10,19 +10,24 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AccountParamPage implements OnInit {
 
-  currentPwd: String;
-  newPwd: String;
-  newEmail: String;
-  validNewPwd: String;
-
   user: any;
+
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  newEmail: string;
+
+  badPassword: boolean;
+
+  emailTaken: boolean;
+
 
   constructor(
     private auth: AuthService,
     // Inject the router
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.auth.getUser$().subscribe(data => {
@@ -33,15 +38,36 @@ export class AccountParamPage implements OnInit {
     })
   }
 
-  updateUser(username: String, newEmail: String){
+  checkPasswords(password1: string, password2: string) {
+    if (password1 === password2) {
+      if (password1.length < 8) {
+        this.badPassword = true;
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-    const email = newEmail;
-    const data = { email: email };
+  updateUser(username: string, newEmail: string, newPassword: string, confirmNewPassword: string) {
 
-    this.http.patch(`https://sons-de-ta-ville.onrender.com/users/${username}`, data)
-    .subscribe((response) => {
-      console.log(response);
-    });
+    const data = { email: this.newEmail, password: this.newPassword };
+
+      this.http.patch(`https://sons-de-ta-ville.onrender.com/users/${username}`, data)
+      .subscribe({
+        next: () => this.router.navigateByUrl('account-param'),
+      error: (err) => {
+        if (err.status === 400) {
+            this.emailTaken = true;
+        } else {
+            this.badPassword = true;
+        }
+        console.warn(`Registration failed: ${err.message}`);
+        console.log(err.error)
+      }
+      });
+
   }
 
 }

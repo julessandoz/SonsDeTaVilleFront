@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="#"></ion-back-button>
+      <ion-button>
+        <ion-icon class="ion-icon-lg" name="chevron-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button href="account-param">
@@ -12,22 +14,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-row>
+  <ion-row class="ion-text-center">
     <ion-col>
       <h1>{{user?.username}}</h1>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col>
-      <p>{{user?.soundsPosted}} sons</p>
-    </ion-col>
-    <ion-col>
-      <p>{{user?.commentsPosted}} commentaires</p>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <app-category-button [categoryName]="'Voitures'" [backgroundColor]="'red'"></app-category-button>
-  </ion-row>
+  <ion-grid class="ion-margin-start">
+    <ion-row class="ion-text-left">
+      <ion-col>
+        <b>Mes sons</b>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-text-left">
+      <ion-col>
+        <p>{{user?.soundsPosted}} sons</p>
+      </ion-col>
+      <ion-col >
+        <p>{{user?.commentsPosted}} commentaires</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 <ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half">
