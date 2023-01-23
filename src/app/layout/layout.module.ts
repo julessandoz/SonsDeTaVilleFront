@@ -9,12 +9,13 @@ import { LayoutPageRoutingModule } from './layout-routing.module';
 import { LayoutPage } from './layout.page';
 
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LayoutPageRoutingModule
+    LayoutPageRoutingModule,
   ],
   declarations: [LayoutPage]
 })
