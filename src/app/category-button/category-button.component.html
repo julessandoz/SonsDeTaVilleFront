@@ -1,4 +1,4 @@
-<div class="category-button">
-  <i class="fas fa-{{categoryName}}"></i>
-  <span>{{categoryName}}</span>
+<div class="category-button" [attr.data-bgColor]="bgColor" *ngIf="category">
+  <ion-icon [name]="category.iconName"></ion-icon>
+  <span>{{category.name}}</span>
 </div>

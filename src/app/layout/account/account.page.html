@@ -25,6 +25,9 @@
       <p>{{user?.commentsPosted}} commentaires</p>
     </ion-col>
   </ion-row>
+  <ion-row>
+    <app-category-button [categoryName]="'Voitures'" [backgroundColor]="'red'"></app-category-button>
+  </ion-row>
 </ion-content>
 
 <ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half">

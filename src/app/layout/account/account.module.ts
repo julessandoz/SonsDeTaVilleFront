@@ -1,21 +1,23 @@
+import { CategoryButtonModule } from './../../category-button/category-button.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 
 import { IonicModule } from '@ionic/angular';
 
 import { AccountPageRoutingModule } from './account-routing.module';
 
 import { AccountPage } from './account.page';
-import { CategoryButtonComponent } from 'src/app/category-button/category-button.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AccountPageRoutingModule
+    AccountPageRoutingModule,
+    CategoryButtonModule
   ],
-  declarations: [AccountPage, CategoryButtonComponent]
+  declarations: [AccountPage]
 })
 export class AccountPageModule {}
