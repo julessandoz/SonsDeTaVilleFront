@@ -7,13 +7,22 @@
 <!-- <ion-content class="ion-padding"> Let's find sounds! </ion-content> -->
 
 <ion-segment value="custom">
-  <ion-segment-button value="custom">
+  <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
     <ion-label>Carte</ion-label>
   </ion-segment-button>
-  <ion-segment-button value="segment">
+  <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
     <ion-label>Liste</ion-label>
   </ion-segment-button>
 </ion-segment>
 
-<div class="map" leaflet [leafletOptions]="mapOptions"></div>
+<ion-content>
+<div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions">
+</div>
+  <div *ngIf="!isMapVisible">
+    <div *ngFor="let sound of sounds">
+      {{sound}}
+    </div>
+  </div>
+</ion-content>
+
 
