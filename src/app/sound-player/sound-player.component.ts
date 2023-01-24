@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sound-player',
@@ -13,32 +14,27 @@ export class SoundPlayerComponent implements OnInit {
   wavesurfer: WaveSurfer;
   isPlaying = false
   duration: number;
-  id: string = "638da12d40ae1f0493231fcc";
-  sound:any;
+  category: string = "Personnes";
+  @Input() soundId: any;
+  @Input() showCategory: boolean = false;
 
-  ngOnInit() {
+  ngOnInit(){
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
       waveColor: '#040303',
       progressColor: '#90323D',
       cursorColor: '#ffffff',
-      scrollParent: true,
+      // scrollParent: true,
       barWidth: 3,
-      fillParent: true,
+      // fillParent: true,
       barHeight: 2.5,
     });
+    this.wavesurfer.load(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`);
 
-    this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.id}`)
-    .subscribe((data) => {
-      console.log(data)
-      this.sound = data;
-    })
-    
     this.wavesurfer.on('ready', () => {
       this.duration = Math.ceil(this.wavesurfer.getDuration());
     });
 
-    this.wavesurfer.load('assets/Georgio - Hôtel 5 étoiles (Clip Officiel).m4a');
     this.wavesurfer.on('finish', () => {
       this.isPlaying = this.wavesurfer.isPlaying();
       console.log(this.isPlaying)
@@ -49,9 +45,5 @@ export class SoundPlayerComponent implements OnInit {
     this.wavesurfer.playPause();
     this.isPlaying = this.wavesurfer.isPlaying();
     console.log(typeof this.wavesurfer.getDuration())
-  }
-
-  test(){
-    this.wavesurfer.load('assets/Georgio - Hôtel 5 étoiles (Clip Officiel).m4a');
   }
 }

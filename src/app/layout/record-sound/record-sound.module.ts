@@ -1,7 +1,8 @@
+import { SoundPlayerModule } from './../../sound-player/sound-player.module';
+import { SoundRecorderModule } from './../../sound-recorder/sound-recorder.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SoundPlayerComponent } from 'src/app/sound-player/sound-player.component';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -15,7 +16,9 @@ import { CommentComponent } from 'src/app/comment/comment.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    RecordSoundPageRoutingModule
+    RecordSoundPageRoutingModule,
+    SoundRecorderModule,
+    SoundPlayerModule
   ],
   declarations: [RecordSoundPage, CommentComponent]
 })

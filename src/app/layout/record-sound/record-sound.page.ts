@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { SoundPlayerComponent } from 'src/app/sound-player/sound-player.component';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-record-sound',
@@ -9,11 +9,10 @@ import { SoundPlayerComponent } from 'src/app/sound-player/sound-player.componen
 })
 export class RecordSoundPage implements OnInit {
 
-  constructor(
-
-  ) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
+  
   }
-
 }
+
