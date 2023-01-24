@@ -1,33 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sound-player',
   templateUrl: './sound-player.component.html',
   styleUrls: ['./sound-player.component.scss'],
 })
-export class SoundPlayerComponent implements OnInit {
+export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
   wavesurfer: WaveSurfer;
   isPlaying = false
   duration: number;
   category: string = "Personnes";
+  @Input() soundId: any;
   @Input() showCategory: boolean = false;
+  elementId: string;
 
-  ngOnInit() {
+  ngOnInit(){
+    this.elementId = `id${this.soundId}`
+  }
+
+  ngAfterViewInit(){
+    
     this.wavesurfer = WaveSurfer.create({
-      container: '#waveform',
+      container: `#${this.elementId}`,
       waveColor: '#040303',
       progressColor: '#90323D',
       cursorColor: '#ffffff',
       // scrollParent: true,
       barWidth: 3,
       // fillParent: true,
-      barHeight: 2.5,
+      barHeight: 0.7,
     });
+    this.wavesurfer.load(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`);
 
-    this.wavesurfer.load('assets/Avenue des Sports 20.m4a');
     this.wavesurfer.on('ready', () => {
       this.duration = Math.ceil(this.wavesurfer.getDuration());
     });
