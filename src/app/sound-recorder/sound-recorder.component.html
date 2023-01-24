@@ -1,10 +1,8 @@
-<ion-content>
-  <ion-button *ngIf="!recording" (click)="startRecording()" expand="full">Start Recording</ion-button>
-  <ion-button *ngIf="recording" (click)="stopRecording()" expand="full" color="secondary">Stop Recording</ion-button>
-
   <ion-fab slot="fixed" horizontal="center" vertical="center">
-    <ion-fab-button color="primary">
+    <ion-fab-button color="primary" #recordButton>
       <ion-icon name="mic" size="large"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</ion-content>
+  <div class="duration" *ngIf="recording">
+    <span>{{durationDisplay}}</span>
+  </div>

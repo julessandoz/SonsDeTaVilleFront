@@ -1,3 +1,4 @@
+import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -9,7 +10,19 @@ import { Component, OnInit } from '@angular/core';
 export class RecordSoundPage implements OnInit {
   
     constructor() { }
-  
+    recordedSound: boolean = false;
+    soundFile: File;
     ngOnInit() {
     }
+
+    async soundRecorded(fileName) {
+      const contents: any = await Filesystem.readFile({
+        path: fileName,
+        directory: Directory.Data,
+      });
+      console.log(contents);
+      this.soundFile = new File([contents.data], fileName, { type: 'audio/wav' });
+      this.recordedSound = true;
+    }
 }
+
