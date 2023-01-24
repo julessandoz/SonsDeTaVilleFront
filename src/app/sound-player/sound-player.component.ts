@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   templateUrl: './sound-player.component.html',
   styleUrls: ['./sound-player.component.scss'],
 })
-export class SoundPlayerComponent implements OnInit {
+export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient) {}
   wavesurfer: WaveSurfer;
@@ -17,17 +17,23 @@ export class SoundPlayerComponent implements OnInit {
   category: string = "Personnes";
   @Input() soundId: any;
   @Input() showCategory: boolean = false;
+  elementId: string;
 
   ngOnInit(){
+    this.elementId = `id${this.soundId}`
+  }
+
+  ngAfterViewInit(){
+    
     this.wavesurfer = WaveSurfer.create({
-      container: '#waveform',
+      container: `#${this.elementId}`,
       waveColor: '#040303',
       progressColor: '#90323D',
       cursorColor: '#ffffff',
       // scrollParent: true,
       barWidth: 3,
       // fillParent: true,
-      barHeight: 2.5,
+      barHeight: 0.7,
     });
     this.wavesurfer.load(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`);
 
