@@ -22,11 +22,14 @@
     --border-radius: 20px;
   }
 
-
-
   .soundsElement{
     width: 100%;
     display: flex;
     flex-direction: row;
   }
 
+  .horizontal-line {
+    height: 2px;
+    width: 90%;
+    background-color: black;
+  }

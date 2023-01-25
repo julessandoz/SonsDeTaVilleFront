@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!displayParam">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button>
@@ -6,14 +6,14 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button href="account-param">
+      <ion-button (click)="displayParam = true">
         <ion-icon name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!displayParam">
   <ion-row class="ion-text-center">
     <ion-col>
       <h1>{{user?.username}}</h1>
@@ -36,6 +36,61 @@
   </ion-grid>
 </ion-content>
 
-<ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half">
+<ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half" *ngIf="!displayParam">
   Déconnexion
 </ion-button>
+
+<ion-header *ngIf="displayParam">
+  <ion-toolbar>
+    <ion-button fill="clear" slot="start" (click)="displayParam = false">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="displayParam">
+  <ion-grid class="ion-margin-start">
+    <ion-row>
+      <ion-col>
+        <h1>Paramètres</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <b>Modifier l'adresse e-mail</b>
+        <ion-input type="email" placeholder="{{user?.email}}" [(ngModel)]="newEmail"></ion-input>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+        <b>Modifier le mot de passe</b>
+        <!--         <ion-input type="password" placeholder="Mot de passe actuel" [(ngModel)]="currentPassword"></ion-input> -->
+        <ion-input type="password" placeholder="Nouveau mot de passe" [(ngModel)]="newPassword"></ion-input>
+        <ion-input type="password" placeholder="Confirmer le mot de passe" [(ngModel)]="confirmNewPassword"></ion-input>
+        <!--Error message displayed if the confirmation password is invalid -->
+        <ion-row lines="none" *ngIf="confirmNewPassword !== newPassword">
+          <ion-text color="danger">Les deux champs mot de passe doivent être identiques</ion-text>
+        </ion-row>
+      </ion-col>
+    </ion-row><br>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="updateUser(user.username, newEmail, newPassword, confirmNewPassword)" fill="outline"
+          expand="block" class="ion-text-center ion-margin-horizontal ion-width-half" [disabled]="!newPassword && !confirmNewPassword && !newEmail">
+          Sauvergarder les modifications
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <!-- Error message displayed if the email is taken -->
+        <ion-text color="danger" *ngIf="emailTaken">Cette adresse email est déjà utilisée</ion-text>
+        <!-- Error message displayed if the password doesn't meet the requirements -->
+        <ion-text color="danger" *ngIf="badPassword">Le mot de passe doit faire au moins 8 caractères</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

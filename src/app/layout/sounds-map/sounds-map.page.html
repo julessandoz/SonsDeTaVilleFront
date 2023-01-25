@@ -1,25 +1,36 @@
-<ion-segment value="custom">
-  <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
-    <ion-label>Carte</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
-    <ion-label>Liste</ion-label>
-  </ion-segment-button>
-</ion-segment>
+<ion-header>
+  <ion-segment value="custom">
+    <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
+      <ion-label>Carte</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
+      <ion-label>Liste</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
 
-<ion-content>
-<div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions">
-</div>
+<ion-content class="content">
+  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions">
+  </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible">
+    <ion-row>
+      <ion-col>
+        <h1>Son(s) environnant(s)</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-end" >
+      <ion-col size="3">
+        <ion-button (click)="filterOn = !filterOn">
+          <ion-icon name="options-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
       <ion-col class="soundPlayer">
         <app-sound-player [showCategory]="true" [soundId]="sound._id"></app-sound-player>
       </ion-col>
-      <!-- <ion-col class="categoryButton">
-        <app-category-button [backgroundColor]="'red'" [categoryName]="sound.category.name"></app-category-button>
-      </ion-col> -->
     </ion-row>
   </ion-grid>
+  <app-filter *ngIf="filterOn"></app-filter>
 </ion-content>
-
-

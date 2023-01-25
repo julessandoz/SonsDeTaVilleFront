@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, MapOptions, tileLayer } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
@@ -14,8 +14,9 @@ export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
   isMapVisible = true;
   sounds: any = [];
+  filterOn: boolean = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient ) {
     this.mapOptions = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
