@@ -4,7 +4,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding"> <!-- record-sound.component.html -->
-  <app-sound-recorder></app-sound-recorder>
-  <!-- <app-sound-player [showCategory]="true"></app-sound-player> -->
-  </ion-content>
+<ion-content class="ion-padding">
+  <div class="recording-step" *ngIf="!recordedSound">
+    <ion-text color="secondary">
+      <h1>Maintiens le bouton pour enregistrer un son!</h1>
+    </ion-text>
+    <app-sound-recorder (soundRecorded)="soundRecorded($event)"></app-sound-recorder>
+  </div>
+  <div class="category-step" *ngIf="recordedSound">
+    <div class="sound-player">
+    </div>
+  </div>
+</ion-content>
