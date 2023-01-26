@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="content">
-  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions">
+  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers">
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible">
     <ion-row>

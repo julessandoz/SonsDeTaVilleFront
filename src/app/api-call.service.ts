@@ -23,12 +23,13 @@ export class ApiCallService {
     return this.http.get(`https://sons-de-ta-ville.onrender.com/categories`)
     }
   
-  createSound(sound, categoryName: string){
+  createSound(sound, categoryName: string, coordinates){
+
     const formData = new FormData();
     formData.append('uploaded_audio', sound);
     formData.append('category', categoryName);
-    formData.append('lat', '46.77002350040661')
-    formData.append('lng', '6.647233947134816')
+    formData.append('lat', coordinates.latitude);
+    formData.append('lng', coordinates.longitude);
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     const options = { headers: headers, responseType: 'text' as const}

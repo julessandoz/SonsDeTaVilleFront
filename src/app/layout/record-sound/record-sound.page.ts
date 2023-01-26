@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Geolocation } from '@capacitor/geolocation';
 
 
 @Component({
@@ -111,10 +112,11 @@ export class RecordSoundPage implements OnInit {
       this.recordedSound = false;
     }
 
-    postSound() {
+    async postSound() {
       const audioFile = new File([this.soundFile], this.soundFile.name, { type: 'audio/webm; codecs-opus' });
-      
-      this.apiCall.createSound(audioFile, this.selectedCategory.name).subscribe((data) => {
+      const location = await Geolocation.getCurrentPosition();
+
+      this.apiCall.createSound(audioFile, this.selectedCategory.name, location.coords).subscribe((data) => {
         this.deleteSound();
       });
     }
