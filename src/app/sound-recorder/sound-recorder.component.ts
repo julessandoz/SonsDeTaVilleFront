@@ -68,10 +68,8 @@ export class SoundRecorderComponent implements OnInit, AfterViewInit {
       return;
     }
     this.duration+=1;
-    console.log(this.duration)
       const remainingSeconds = (30 - this.duration).toString().padStart(2, '0');
       this.durationDisplay = `${remainingSeconds} secondes restantes`;
-      console.log(`Duration: ${this.duration} seconds`);
     setTimeout(() => {
       this.calculateDuration();
     }, 1000);
@@ -83,12 +81,10 @@ export class SoundRecorderComponent implements OnInit, AfterViewInit {
       directory: Directory.Data,
     });
     this.storedFileNames = files.files;
-    console.log('Files: ', this.storedFileNames);
   }
 
   startRecording() {
     if (!this.recording) {
-      console.log('Start recording');
       this.recording = true;
       VoiceRecorder.startRecording();
     }
@@ -96,7 +92,6 @@ export class SoundRecorderComponent implements OnInit, AfterViewInit {
 
   stopRecording() {
     if (this.recording) {
-      console.log('Stop recording');
       this.recording = false;
       VoiceRecorder.stopRecording().then(async (result: RecordingData) => {
         if (result.value && result.value.recordDataBase64) {

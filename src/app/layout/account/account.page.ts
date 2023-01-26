@@ -33,7 +33,6 @@ export class AccountPage implements OnInit {
       this.http
         .get(`https://sons-de-ta-ville.onrender.com/users/${data.username}`)
         .subscribe((data) => {
-          console.log(data);
           this.user = data;
         });
     });

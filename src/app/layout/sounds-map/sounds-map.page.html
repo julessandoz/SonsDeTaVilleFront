@@ -28,7 +28,7 @@
     <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
       <ion-col class="soundPlayer">
-        <app-sound-player [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
       </ion-col>
     </ion-row>
   </ion-grid>

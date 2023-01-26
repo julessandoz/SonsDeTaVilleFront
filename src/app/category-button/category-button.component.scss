@@ -13,7 +13,7 @@
     font-size: 32px;
  }
 
-[data-bgColor="red"] {
+[data-bgColor="red"], .active {
     background-color: #90323D;
     color: #FDFFFC;
     border-color: transparent;
@@ -22,5 +22,5 @@
 [data-bgColor="white"] {
     background-color: transparent;
     color: #90323D;
-    border-color: #90323D;
+    border: 2px solid #90323D;
 }

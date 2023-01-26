@@ -1,3 +1,4 @@
+import { CategoryButtonModule } from './../../category-button/category-button.module';
 import { SoundPlayerModule } from './../../sound-player/sound-player.module';
 import { SoundRecorderModule } from './../../sound-recorder/sound-recorder.module';
 import { NgModule } from '@angular/core';
@@ -18,7 +19,8 @@ import { CommentComponent } from 'src/app/comment/comment.component';
     IonicModule,
     RecordSoundPageRoutingModule,
     SoundRecorderModule,
-    SoundPlayerModule
+    SoundPlayerModule,
+    CategoryButtonModule
   ],
   declarations: [RecordSoundPage, CommentComponent]
 })

@@ -13,6 +13,30 @@
   </div>
   <div class="category-step" *ngIf="recordedSound">
     <div class="sound-player">
+      <app-sound-player [soundData]="soundFileBase64"></app-sound-player> 
+      <!-- <ion-chip (click)="playAudio()">
+        <ion-icon name="play" color="#ffffff"></ion-icon>
+        <ion-label>Ecouter l'enregistrement</ion-label>
+      </ion-chip> -->
+    </div>
+    <div class="category-picker">
+      <ion-text color="secondary">
+        <h1>Choisis une catégorie pour ton son!</h1>
+      </ion-text>
+      <ion-grid fixed="true">
+        <ion-row *ngFor="let i of rows">
+          <ion-col *ngFor="let category of categoriesArray.slice((i)*3, ((i)*3)+3)">
+            <app-category-button [categoryName]="category.name" [backgroundColor]="'white'"
+              (click)="clickCategory(category)"></app-category-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="deleteBtn">
+      <ion-chip (click)="presentDeleteAlert()">
+        <ion-icon name="trash" color="primary"></ion-icon>
+        <ion-label>ou supprime l'enregistrement</ion-label>
+      </ion-chip>
     </div>
   </div>
 </ion-content>

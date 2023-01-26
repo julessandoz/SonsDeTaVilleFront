@@ -2,6 +2,7 @@ import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, MapOptions, tileLayer } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
+import { createInflate } from 'zlib';
 
 
 @Component({
@@ -31,8 +32,12 @@ export class SoundsMapPage implements OnInit {
   ngOnInit() {
     this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/`)
     .subscribe((data) => {
-      console.log(data)
       this.sounds = data;
     })
+  }
+  createFile(data){
+    const audio =  new Audio(`data:audio/wav;base64,${data}`);
+    audio.oncanplaythrough = () => audio.play();
+    audio.load();
   }
 }

@@ -14,9 +14,12 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   wavesurfer: WaveSurfer;
   isPlaying = false
   duration: number;
-  category: string = "Personnes";
+  @Input() category: string;
   @Input() soundId: any;
   @Input() showCategory: boolean = false;
+  @Input() soundData?: any;
+  audio: any;
+
   elementId: string;
 
   ngOnInit(){
@@ -30,12 +33,22 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
       waveColor: '#040303',
       progressColor: '#90323D',
       cursorColor: '#ffffff',
-      // scrollParent: true,
-      barWidth: 3,
+      scrollParent: false,
+      barWidth: 5,
       // fillParent: true,
-      barHeight: 0.7,
+      barHeight: 2,
     });
-    this.wavesurfer.load(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`);
+    if (this.soundData) {
+      this.audio =  new Audio(`data:audio/wav;base64,${this.soundData}`);
+      this.wavesurfer.load(this.audio.attributes.src.value);
+    } else {
+      this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`, {responseType: 'text'} ).subscribe((data) => {
+      this.audio =  new Audio(`data:audio/wav;base64,${data}`);
+      this.wavesurfer.load(this.audio.attributes.src.value);
+      }
+    )
+    }
+    
 
     this.wavesurfer.on('ready', () => {
       this.duration = Math.ceil(this.wavesurfer.getDuration());
@@ -43,13 +56,11 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
     this.wavesurfer.on('finish', () => {
       this.isPlaying = this.wavesurfer.isPlaying();
-      console.log(this.isPlaying)
     });
   }
 
   playPause(){
     this.wavesurfer.playPause();
     this.isPlaying = this.wavesurfer.isPlaying();
-    console.log(typeof this.wavesurfer.getDuration())
   }
 }
