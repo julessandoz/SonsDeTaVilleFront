@@ -31,10 +31,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'account-param',
-        loadChildren: () => import('./account-param/account-param.module').then( m => m.AccountParamPageModule)
-      },
-      {
         path: "",
         redirectTo: "record-sound", // Or whatever tabs is your default one
         pathMatch: "full",

@@ -33,3 +33,19 @@
     width: 90%;
     background-color: black;
   }
+
+  ion-col{
+    display: flex;
+    justify-content: center;
+  }
+
+  #kmCol{
+    align-items: center;
+  }
+
+  #filterButtons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+  }

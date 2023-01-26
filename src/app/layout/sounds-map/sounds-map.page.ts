@@ -2,8 +2,6 @@ import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, MapOptions, tileLayer } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
-import { ModalController } from '@ionic/angular';
-import { FilterComponent } from 'src/app/filter/filter.component';
 
 
 @Component({
@@ -16,9 +14,16 @@ export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
   isMapVisible = true;
   sounds: any = [];
-  filterOn: boolean = false;
 
-  constructor(private http: HttpClient, private modalCtrl: ModalController ) {
+  filterOn: boolean = false;
+  result: string;
+  chosenDate: string;
+  chosenCategory : string = null;
+  chosenDistance: number = 20;
+  datePickerOn:boolean = false;
+  categories: any = [];
+
+  constructor(private http: HttpClient ) {
     this.mapOptions = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,6 +33,8 @@ export class SoundsMapPage implements OnInit {
       zoom: 13,
       center: latLng(46.879966, 6.641524),
     };
+
+    this.chosenDate = new Date().toISOString();
   }
 
   ngOnInit() {
@@ -35,12 +42,15 @@ export class SoundsMapPage implements OnInit {
     .subscribe((data) => {
       this.sounds = data;
     })
+
+    this.http.get(`https://sons-de-ta-ville.onrender.com/categories/`)
+    .subscribe((data) =>{
+      console.log(data)
+      this.categories = data;
+    })
   }
 
-  async openOverlay() {
-    const modal = await this.modalCtrl.create({
-      component: FilterComponent
-    });
-    await modal.present();
+  defaultValues(){
+    this.chosenCategory = null;
   }
 }
