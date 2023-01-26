@@ -2,6 +2,8 @@ import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, MapOptions, tileLayer } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
+import { ModalController } from '@ionic/angular';
+import { FilterComponent } from 'src/app/filter/filter.component';
 
 
 @Component({
@@ -16,7 +18,7 @@ export class SoundsMapPage implements OnInit {
   sounds: any = [];
   filterOn: boolean = false;
 
-  constructor(private http: HttpClient ) {
+  constructor(private http: HttpClient, private modalCtrl: ModalController ) {
     this.mapOptions = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -34,5 +36,12 @@ export class SoundsMapPage implements OnInit {
       console.log(data)
       this.sounds = data;
     })
+  }
+
+  async openOverlay() {
+    const modal = await this.modalCtrl.create({
+      component: FilterComponent
+    });
+    await modal.present();
   }
 }
