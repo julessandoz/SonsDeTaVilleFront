@@ -25,6 +25,7 @@ export class SoundsMapPage implements OnInit {
           maxZoom: 18,
         }),
       ],
+      zoomControl: false,
       zoom: 13,
       center: latLng(46.879966, 6.641524),
     };

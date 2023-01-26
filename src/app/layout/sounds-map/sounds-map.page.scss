@@ -4,7 +4,7 @@
 
 
   ion-segment-button {
-    --indicator-color: #90323D;
+    --indicator-color: transparent;
   }
   ion-segment-button.md {
     --color: #90323D;
@@ -22,6 +22,20 @@
     --border-radius: 20px;
   }
 
+  ion-segment-button[value=custom].ios{
+    border-radius: 20px 0 0 20px;
+    margin-left: 2vw;
+  }
+
+  ion-segment-button[value=segment].ios{
+    border-radius: 0 20px 20px 0;
+    margin-right: 2vw;
+  }
+
+  #soundsListContainer{
+    padding-top: 5vh
+  }
+
   .soundsElement{
     width: 100%;
     display: flex;
@@ -32,4 +46,10 @@
     height: 2px;
     width: 90%;
     background-color: black;
+  }
+
+  ion-segment{
+    --background: transparent;
+    position: absolute;
+    top: 3vh;
   }
