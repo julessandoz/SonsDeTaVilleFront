@@ -49,5 +49,7 @@
 	<string>$(PRODUCT_NAME) would like to use your location to show you the closest sounds.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone to record sounds.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your location to show you the closest sounds.</string>
 </dict>
 </plist>
