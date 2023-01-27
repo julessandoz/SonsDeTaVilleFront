@@ -1,16 +1,23 @@
 <ion-header *ngIf="!filterOn">
   <ion-segment value="custom">
-    <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
+    <ion-segment-button value="custom" (click)="isMapVisible = true">
       <ion-label>Carte</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
+    <ion-segment-button value="segment" (click)="isMapVisible = false">
       <ion-label>Liste</ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
 
 <ion-content class="content" *ngIf="!filterOn">
-  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers">
+  <ion-chip class="center-chip" *ngIf="isMapVisible" (click)="centerViewOnUser()">
+    <ion-icon name="navigate-circle" color="white"></ion-icon>
+    <ion-label>Centrer sur ma position</ion-label>
+  </ion-chip>
+  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers" (click)="closeSound()">
+  </div>
+  <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
+    <app-sound-player [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id"></app-sound-player>
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
     <ion-row>
@@ -71,7 +78,7 @@
     </ion-row>
     <ion-row id="filterButtons">
       <ion-col>
-        <ion-button (click)="filterOn = false; resetDefaultFilter()">
+        <ion-button (click)="filterOn = false; defaultFilter()">
           Réinitiliser
         </ion-button>
       </ion-col>
