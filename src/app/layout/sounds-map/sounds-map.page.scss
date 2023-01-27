@@ -51,7 +51,10 @@
   ion-segment{
     --background: transparent;
     position: absolute;
-    top: 3vh;
+  }
+
+  ion-segment.ios{
+    top: 5vh;
   }
 
   ion-col{
@@ -68,4 +71,24 @@
     align-items: center;
     justify-content: center;
     margin-top: 32px;
+  }
+
+  .soundMarker{
+    height: 40px; 
+    width: 40px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: 2px solid #90323D;
+    border-radius: 50%;
+  }
+
+  .center-chip{
+    --background: #90323D;
+    --color: #fff;
+    position: absolute;
+    bottom: 5vh;
+    right: 2vw;
+    z-index: 999999;
   }

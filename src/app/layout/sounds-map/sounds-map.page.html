@@ -10,6 +10,10 @@
 </ion-header>
 
 <ion-content class="content" *ngIf="!filterOn">
+  <ion-chip class="center-chip" *ngIf="isMapVisible" (click)="centerViewOnUser()">
+    <ion-icon name="navigate-circle" color="white"></ion-icon>
+    <ion-label>Centrer sur ma position</ion-label>
+  </ion-chip>
   <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers">
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
