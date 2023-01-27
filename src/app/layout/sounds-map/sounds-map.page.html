@@ -14,7 +14,10 @@
     <ion-icon name="navigate-circle" color="white"></ion-icon>
     <ion-label>Centrer sur ma position</ion-label>
   </ion-chip>
-  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers">
+  <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers" (click)="closeSound()">
+  </div>
+  <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
+    <app-sound-player [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id"></app-sound-player>
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
     <ion-row>

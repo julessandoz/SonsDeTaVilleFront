@@ -1,3 +1,4 @@
+import { Sound } from './../../models/sound';
 import { Category } from './../../models/category';
 import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, Map, MapOptions, Marker, tileLayer, divIcon } from 'leaflet';
@@ -13,7 +14,7 @@ import { Geolocation } from '@capacitor/geolocation';
 export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
   isMapVisible = true;
-  sounds: any = [];
+  sounds: Sound[] = [];
 
   filterOn: boolean = false;
   result: string;
@@ -32,6 +33,8 @@ export class SoundsMapPage implements OnInit {
     iconSize: [32, 32],
   });
   userMarker: Marker;
+  selectedSound: Sound;
+  selectedSoundMarker: HTMLElement;
 
   constructor(private http: HttpClient) {
     this.getUserLocation();
@@ -39,9 +42,8 @@ export class SoundsMapPage implements OnInit {
     this.http
       .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
       .subscribe((data) => {
-        this.sounds = data;
+        this.sounds = data as Sound[];
         this.sounds.forEach((sound) => {
-          console.log(sound.location.coordinates);
           const myIcon = divIcon({
             className: 'soundMarker',
             html: `<div style="display: flex; justify-content: center; align-items: center; height: 40px; width: 40px; border: 2px solid #90323D; border-radius: 20px; color: #90323D;"><ion-icon name="${sound.category.iconName}" size="large" style="color: inherit;"></ion-icon></div>`,
@@ -54,9 +56,7 @@ export class SoundsMapPage implements OnInit {
           this.mapMarkers.push(marker);
           marker.on('click', (e) => {
             const divElement = e.sourceTarget._icon.children[0]
-            divElement.style.border = '0px';
-            divElement.style.backgroundColor = '#90323D';
-            divElement.style.color= 'white';
+            this.soundMarkerClick(divElement, sound);
           });
         });
       });
@@ -77,13 +77,12 @@ export class SoundsMapPage implements OnInit {
     this.http
       .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
       .subscribe((data) => {
-        this.sounds = data;
+        this.sounds = data as Sound[];
       });
 
     this.http
       .get(`https://sons-de-ta-ville.onrender.com/categories/`)
       .subscribe((data) => {
-        console.log(data);
         this.categories = data as Category[];
       });
 
@@ -130,4 +129,28 @@ export class SoundsMapPage implements OnInit {
     this.userMarker.setLatLng([this.currentLocation.latitude, this.currentLocation.longitude]);
     setTimeout(() => map.invalidateSize(), 0);
   }
+
+  soundMarkerClick(markerElement: HTMLElement, sound) {
+    this.selectedSound = sound;
+    this.selectedSoundMarker = markerElement;
+    if (this.isMapVisible && this.selectedSound){
+      console.log('ok')
+      console.log(this.selectedSound)
+    }
+    this.map.setView([sound.location.coordinates[0], sound.location.coordinates[1]], 20);
+    markerElement.style.border = '0px';
+    markerElement.style.backgroundColor = '#90323D';
+    markerElement.style.color= 'white';
+  }
+
+  closeSound() {
+    if (this.selectedSoundMarker && this.selectedSound) {
+      this.selectedSoundMarker.style.border = '2px solid #90323D';
+      this.selectedSoundMarker.style.backgroundColor = 'transparent';
+      this.selectedSoundMarker.style.color= '#90323D';
+      this.selectedSoundMarker = null;
+      this.selectedSound = null;
+    }
+  }
+
 }
