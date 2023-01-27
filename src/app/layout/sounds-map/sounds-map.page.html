@@ -17,7 +17,10 @@
   <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers" (click)="closeSound()">
   </div>
   <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
-    <app-sound-player [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id"></app-sound-player>
+    <div *ngIf="selectedSound && !soundReady" class="loader">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+      <app-sound-player [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id" (soundLoaded)="finishedLoading()"></app-sound-player>
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
     <ion-row>

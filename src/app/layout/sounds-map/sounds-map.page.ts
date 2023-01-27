@@ -35,6 +35,7 @@ export class SoundsMapPage implements OnInit {
   userMarker: Marker;
   selectedSound: Sound;
   selectedSoundMarker: HTMLElement;
+  soundReady: boolean = false;
 
   constructor(private http: HttpClient) {
     this.getUserLocation();
@@ -143,6 +144,10 @@ export class SoundsMapPage implements OnInit {
     markerElement.style.color= 'white';
   }
 
+  finishedLoading() {
+    this.soundReady = true;
+  }
+
   closeSound() {
     if (this.selectedSoundMarker && this.selectedSound) {
       this.selectedSoundMarker.style.border = '2px solid #90323D';
@@ -150,6 +155,7 @@ export class SoundsMapPage implements OnInit {
       this.selectedSoundMarker.style.color= '#90323D';
       this.selectedSoundMarker = null;
       this.selectedSound = null;
+      this.soundReady = false;
     }
   }
 
