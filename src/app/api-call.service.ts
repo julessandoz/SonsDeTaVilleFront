@@ -12,13 +12,14 @@ export class ApiCallService {
   constructor(private http: HttpClient) { }
 
   getAllSounds(){
-    this.http.get(`https://sons-de-ta-ville.onrender.com/sounds`)
-    .subscribe((data) =>{
-      this.sounds = data;
-    })
-    return this.sounds;
+    return this.http.get(`https://sons-de-ta-ville.onrender.com/sounds`)
   }
 
+  getFilteredSounds(params){
+    const options = {params: params}
+    return this.http.get(`https://sons-de-ta-ville.onrender.com/sounds`, options)
+
+  }
   getAllCategories(){
     return this.http.get(`https://sons-de-ta-ville.onrender.com/categories`)
     }
@@ -35,5 +36,10 @@ export class ApiCallService {
     const options = { headers: headers, responseType: 'text' as const}
     return this.http.post(`https://sons-de-ta-ville.onrender.com/sounds`, formData, options)
   }
+
+  getUserSounds(userId: String){
+    return this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/?userId=${userId}`);
+  }
+
 
 }

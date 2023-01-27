@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('constructor')
+  }
   wavesurfer: WaveSurfer;
   isPlaying = false
   duration: number;
@@ -19,6 +21,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   @Input() showCategory: boolean = false;
   @Input() soundData?: any;
   audio: any;
+  @Output() soundLoaded = new EventEmitter<boolean>();
 
   elementId: string;
 
@@ -51,7 +54,8 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
     
 
     this.wavesurfer.on('ready', () => {
-      this.duration = Math.ceil(this.wavesurfer.getDuration());
+      console.log('ready')
+      this.soundLoaded.emit(true);
     });
 
     this.wavesurfer.on('finish', () => {

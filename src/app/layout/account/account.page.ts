@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { SoundPlayerComponent } from 'src/app/sound-player/sound-player.component';
+import { ApiCallService } from 'src/app/api-call.service';
 
 @Component({
   selector: 'app-account',
@@ -21,11 +23,14 @@ export class AccountPage implements OnInit {
 
   emailTaken: boolean;
 
+  sounds: any = [];
+
   constructor(
     private auth: AuthService,
     // Inject the router
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private api: ApiCallService
   ) {}
 
   ngOnInit() {
@@ -34,8 +39,11 @@ export class AccountPage implements OnInit {
         .get(`https://sons-de-ta-ville.onrender.com/users/${data.username}`)
         .subscribe((data) => {
           this.user = data;
+          this.api.getUserSounds(this.user._id).subscribe((data) =>{
+            this.sounds = data;
+          })
         });
-    });
+    })
   }
 
   logOut() {
