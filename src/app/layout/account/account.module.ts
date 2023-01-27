@@ -2,6 +2,7 @@ import { CategoryButtonModule } from './../../category-button/category-button.mo
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SoundPlayerModule } from 'src/app/sound-player/sound-player.module';
 
 
 import { IonicModule } from '@ionic/angular';
@@ -16,7 +17,8 @@ import { AccountPage } from './account.page';
     FormsModule,
     IonicModule,
     AccountPageRoutingModule,
-    CategoryButtonModule
+    CategoryButtonModule,
+    SoundPlayerModule
   ],
   declarations: [AccountPage]
 })

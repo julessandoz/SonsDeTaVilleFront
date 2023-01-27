@@ -29,14 +29,25 @@
       <ion-col>
         <p>{{user?.soundsPosted}} sons</p>
       </ion-col>
-      <ion-col >
+      <ion-col>
         <p>{{user?.commentsPosted}} commentaires</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="soundsElement" *ngFor="let sound of sounds">
+      <ion-col class="soundPlayer">
+        <app-sound-player [category]="sound.category.name" [showCategory]="true"
+          [soundId]="sound._id"></app-sound-player>
+      </ion-col>
+      <ion-col class="soundPlayer">
+        <app-sound-player [category]="sound.category.name" [showCategory]="true"
+          [soundId]="sound._id"></app-sound-player>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-button (click)="logOut()" fill="outline" expand="block" class="ion-text-center ion-margin-horizontal ion-width-half" *ngIf="!displayParam">
+<ion-button (click)="logOut()" fill="outline" expand="block"
+  class="ion-text-center ion-margin-horizontal ion-width-half" *ngIf="!displayParam">
   Déconnexion
 </ion-button>
 
@@ -78,7 +89,8 @@
     <ion-row>
       <ion-col>
         <ion-button (click)="updateUser(user.username, newEmail, newPassword, confirmNewPassword)" fill="outline"
-          expand="block" class="ion-text-center ion-margin-horizontal ion-width-half" [disabled]="!newPassword && !confirmNewPassword && !newEmail">
+          expand="block" class="ion-text-center ion-margin-horizontal ion-width-half"
+          [disabled]="!newPassword && !confirmNewPassword && !newEmail">
           Sauvergarder les modifications
         </ion-button>
       </ion-col>
@@ -93,4 +105,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-

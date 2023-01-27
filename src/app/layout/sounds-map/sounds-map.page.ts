@@ -1,8 +1,9 @@
 import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, Map, MapOptions, Marker, tileLayer, divIcon} from 'leaflet';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
 import { Geolocation } from '@capacitor/geolocation';
+import { ApiCallService } from 'src/app/api-call.service';
 
 
 @Component({
@@ -19,16 +20,20 @@ export class SoundsMapPage implements OnInit {
   filterOn: boolean = false;
   result: string;
   chosenDate: string;
-  chosenCategory : string;
+  selectedDate: string;
+  chosenCategory : string = null;
+  categoryId:string;
+  selectedDistance: number = 0;
   chosenDistance: number = 0;
   datePickerOn:boolean = false;
+  selectedCategory:string = null;
   categories: any = [];
 
   currentLocation: GeolocationCoordinates;
   map: Map;
   mapMarkers: Marker[] = [];
 
-  constructor(private http: HttpClient ) {
+  constructor(private http: HttpClient, private api:ApiCallService ) {
     this.getUserLocation();
     this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/`)
     .subscribe((data) => {
@@ -68,12 +73,54 @@ export class SoundsMapPage implements OnInit {
       this.categories = data;
     })
 
-    this.chosenDate = new Date().toISOString();
+    this.selectedDate = new Date().toISOString();
   }
 
-  defaultValues(){
-    this.chosenCategory = null
+  async confirmFilter(){
+    this.chosenCategory = this.selectedCategory;
+    this.chosenDistance = this.selectedDistance * 1000;
+    this.chosenDate = this.selectedDate.slice(0,10);
+    console.log(this.chosenCategory)
+
+    
+    let params = new HttpParams();
+    if(this.categoryId){
+      console.log('category')
+      params = params.set('category', this.categoryId)
+    }
+    let position = await this.getUserLocation();
+    console.log(position)
+    if(this.chosenDate){
+      params = params.set('date', this.chosenDate)
+    }
+
+    this.api.getFilteredSounds(params)
+    .subscribe((data) =>{
+      console.log(data)
+      this.sounds = data
+    })
   }
+
+  resetActualFilter(){
+    this.selectedCategory = this.chosenCategory;
+    this.selectedDistance = this.chosenDistance / 1000;
+    this.selectedDate = this.chosenDate;
+  }
+
+  resetDefaultFilter(){
+    this.chosenCategory = null;
+    this.categoryId = null;
+    this.chosenDistance = 0;
+    this.selectedDistance = 0;
+    this.selectedCategory = null;
+    this.selectedDate = new Date().toISOString();
+
+    this.api.getAllSounds()
+    .subscribe((data)=>{
+      this.sounds = data;
+    })
+  }
+
 
   async getUserLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
