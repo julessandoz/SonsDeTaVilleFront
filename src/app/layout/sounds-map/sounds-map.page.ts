@@ -129,7 +129,7 @@ export class SoundsMapPage implements OnInit {
     this.selectedDate = this.chosenDate;
   }
 
-  ionViewDiresetDEnter() {
+  ionViewDidEnter() {
     this.locationInterval = setInterval(() => {
       this.getUserLocation().then((coordinates)=>{
         this.currentLocation = coordinates;
