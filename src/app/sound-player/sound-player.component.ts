@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient) {
-    console.log('constructor')
   }
   wavesurfer: WaveSurfer;
   isPlaying = false
@@ -30,7 +29,6 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    
     this.wavesurfer = WaveSurfer.create({
       container: `#${this.elementId}`,
       waveColor: '#040303',
@@ -54,7 +52,6 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
     
 
     this.wavesurfer.on('ready', () => {
-      console.log('ready')
       this.soundLoaded.emit(true);
     });
 

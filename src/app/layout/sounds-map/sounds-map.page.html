@@ -1,9 +1,9 @@
 <ion-header *ngIf="!filterOn">
   <ion-segment value="custom">
-    <ion-segment-button value="custom" (click)="isMapVisible = true">
+    <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
       <ion-label>Carte</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="segment" (click)="isMapVisible = false">
+    <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
       <ion-label>Liste</ion-label>
     </ion-segment-button>
   </ion-segment>
@@ -17,10 +17,9 @@
   <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers" (click)="closeSound()">
   </div>
   <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
-    <div *ngIf="selectedSound && !soundReady" class="loader">
-      <ion-spinner name="crescent"></ion-spinner>
-    </div>
+    <div class="player">
       <app-sound-player [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id" (soundLoaded)="finishedLoading()"></app-sound-player>
+    </div>
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
     <ion-row>
@@ -37,7 +36,10 @@
     </ion-row>
     <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
-      <ion-col class="soundPlayer">
+      <ion-col class="soundPlayer" *ngIf="chosenCategory !== null">
+        <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id" *ngIf="chosenCategory === sound.category.name"></app-sound-player>
+      </ion-col>
+      <ion-col class="soundPlayer" *ngIf="chosenCategory === null">
         <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
       </ion-col>
     </ion-row>
@@ -48,7 +50,7 @@
   <ion-grid>
     <ion-row >
       <ion-col class="ion-justify-content-start">
-        <ion-button fill="clear" (click)="filterOn = false; resetActualFilter()" >
+        <ion-button fill="clear" (click)="filterOn = false; defaultFilter()" >
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </ion-col>
@@ -57,36 +59,31 @@
       <ion-col>
         <ion-button (click)="datePickerOn = !datePickerOn">
           <ion-icon name="calendar-outline"></ion-icon>
-          {{selectedDate | date:'dd.MM.yyyy'}}
+          {{chosenDate | date:'dd.MM.yyyy'}}
         </ion-button>
       </ion-col>
       <ion-col id="kmCol">
-          <b>{{selectedDistance}} km</b>
+          <b>{{chosenDistance}} km</b>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-datetime displayFormat="DD/MM/YYYY" *ngIf="datePickerOn" [(ngModel)]="selectedDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" *ngIf="datePickerOn" [(ngModel)]="chosenDate"></ion-datetime>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8">
-        <ion-range [(ngModel)]="selectedDistance" min="1" max="50"></ion-range>
+        <ion-range [(ngModel)]="chosenDistance" min="0" max="30"></ion-range>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col *ngFor="let category of categories" size="4">
-          <app-category-button [categoryName]="category.name" [backgroundColor]="'white'" (click)="selectedCategory = category.name; categoryId = category._id" ></app-category-button>
+          <app-category-button [categoryName]="category.name" [backgroundColor]="'white'" (click)="chosenCategory = category.name" ></app-category-button>
       </ion-col>
     </ion-row>
     <ion-row id="filterButtons">
       <ion-col>
-        <ion-button (click)="filterOn = false; defaultFilter()">
-          Réinitiliser
-        </ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button (click)="filterOn = false; confirmFilter()">
+        <ion-button (click)="filterOn = false">
           Valider
         </ion-button>
       </ion-col>
