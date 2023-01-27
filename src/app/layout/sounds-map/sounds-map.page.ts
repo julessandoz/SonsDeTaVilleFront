@@ -2,9 +2,10 @@ import { Sound } from './../../models/sound';
 import { Category } from './../../models/category';
 import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { latLng, Map, MapOptions, Marker, tileLayer, divIcon } from 'leaflet';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
 import { Geolocation } from '@capacitor/geolocation';
+import { ApiCallService } from 'src/app/api-call.service';
 
 @Component({
   selector: 'app-sounds-map',
@@ -13,15 +14,19 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
-  isMapVisible = true;
+  isMapVisible: boolean = true;
   sounds: Sound[] = [];
 
   filterOn: boolean = false;
   result: string;
   chosenDate: string;
-  chosenCategory: string;
+  selectedDate: string;
+  chosenCategory: string = null;
+  categoryId:string;
+  selectedDistance: number = 0;
   chosenDistance: number = 0;
   datePickerOn: boolean = false;
+  selectedCategory:string = null;
   categories: Category[] = [];
   currentLocation: GeolocationCoordinates;
   locationInterval: any;
@@ -37,7 +42,7 @@ export class SoundsMapPage implements OnInit {
   selectedSoundMarker: HTMLElement;
   soundReady: boolean = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private api:ApiCallService) {
     this.getUserLocation();
     this.userMarker = new Marker([0, 0], { icon: this.userIcon });
     this.http
@@ -87,10 +92,44 @@ export class SoundsMapPage implements OnInit {
         this.categories = data as Category[];
       });
 
-    this.chosenDate = new Date().toISOString();
+    this.selectedDate = new Date().toISOString();
   }
 
-  ionViewDidEnter() {
+  async confirmFilter(){
+    this.chosenCategory = this.selectedCategory;
+    this.chosenDistance = this.selectedDistance * 1000;
+    this.chosenDate = this.selectedDate.slice(0,10);
+
+    let position = await this.getUserLocation();
+    let params = new HttpParams();
+
+    params = params.set('lat', position.latitude);
+    params = params.set('lng', position.longitude);
+    params = params.set('rad', this.chosenDistance);
+
+
+    if(this.categoryId){
+      params = params.set('category', this.categoryId)
+    }
+    
+    if(this.chosenDate){
+      params = params.set('date', this.chosenDate)
+    }
+
+    this.api.getFilteredSounds(params)
+    .subscribe((data) =>{
+      console.log(data)
+      this.sounds = data as Sound[]
+    })
+  }
+
+  resetActualFilter(){
+    this.selectedCategory = this.chosenCategory;
+    this.selectedDistance = this.chosenDistance / 1000;
+    this.selectedDate = this.chosenDate;
+  }
+
+  ionViewDiresetDEnter() {
     this.locationInterval = setInterval(() => {
       this.getUserLocation().then((coordinates)=>{
         this.currentLocation = coordinates;
@@ -110,9 +149,20 @@ export class SoundsMapPage implements OnInit {
     );
   }
 
-  defaultValues() {
-    this.chosenCategory = null;
+  defaultFilter() {
+    this.chosenCategory = null;;
+    this.categoryId = null;
+    this.chosenDistance = 0;
+    this.selectedDistance = 0;
+    this.selectedCategory = null;
+    this.selectedDate = new Date().toISOString();
+
+    this.api.getAllSounds()
+    .subscribe((data)=>{
+      this.sounds = data as Sound[]
+    })
   }
+
 
   async getUserLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
