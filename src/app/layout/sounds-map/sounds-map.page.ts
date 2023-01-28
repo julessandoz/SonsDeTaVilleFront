@@ -1,10 +1,9 @@
 import { LoadingController } from '@ionic/angular';
 import { Sound } from './../../models/sound';
 import { Category } from './../../models/category';
-import { Component, importProvidersFrom, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { latLng, Map, MapOptions, Marker, tileLayer, divIcon } from 'leaflet';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { mergeMap } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
 import { Geolocation } from '@capacitor/geolocation';
 import { ApiCallService } from 'src/app/api-call.service';
 
@@ -44,11 +43,10 @@ export class SoundsMapPage implements OnInit {
   soundReady: boolean = false;
   loader: any;
 
-  constructor(private http: HttpClient, private api:ApiCallService, private loadingCtrl: LoadingController) {
+  constructor(private api:ApiCallService, private loadingCtrl: LoadingController) {
     this.getUserLocation();
     this.userMarker = new Marker([0, 0], { icon: this.userIcon });
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
+    this.api.getAllSounds()
       .subscribe((data) => {
         this.sounds = data as Sound[];
         this.sounds.forEach((sound) => {
@@ -84,14 +82,12 @@ export class SoundsMapPage implements OnInit {
       center: latLng(46.879966, 6.641524),
     };
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
+    this.api.getAllSounds()
       .subscribe((data) => {
         this.sounds = data as Sound[];
       });
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/categories/`)
+    this.api.getAllCategories()
       .subscribe((data) => {
         this.categories = data as Category[];
       });
