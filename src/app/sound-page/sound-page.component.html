@@ -1,0 +1,43 @@
+<ion-content>
+  <ion-grid>
+    <ion-row >
+      <ion-col class="ion-justify-content-start">
+        <ion-button fill="clear" (click)="closeSoundPage()" >
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <app-sound-player *ngIf="recievedSoundId"   [category]="'Drôle'" [showCategory]="true" [soundId]="recievedSoundId">
+        </app-sound-player>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <hr class="horizontal-line">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p>écouté par <b>{{user.username}}</b></p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h2><b>{{sound.comments.length}} commentaires</b></h2>
+        <ion-input type="text" placeholder="Commenter en tant que {{user?.username}}" [(ngModel)]="newComment"></ion-input>
+        <ion-button [disabled]="!newComment" (click)="createComment(recievedSoundId, newComment)">
+          Poster
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let comment of sound.comments" >
+      <ion-col>
+        <b><p>{{comment.author}}</p></b>
+        <p>{{comment.comment}}</p>
+        <p>{{comment.date | date:'dd.MM.yyyy'}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -21,6 +21,9 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   @Input() soundData?: any;
   audio: any;
   @Output() soundLoaded = new EventEmitter<boolean>();
+  @Output() soundIdSent = new EventEmitter<string>();
+  @Output() displaySoundPage = new EventEmitter<boolean>();
+
 
   elementId: string;
 
@@ -63,5 +66,13 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   playPause(){
     this.wavesurfer.playPause();
     this.isPlaying = this.wavesurfer.isPlaying();
+  }
+
+  sendSoundId(){
+    this.soundIdSent.emit(this.soundId); 
+  }
+
+  openSoundPage(){
+    this.displaySoundPage.emit()
   }
 }
