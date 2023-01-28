@@ -40,6 +40,7 @@ export class AccountPage implements OnInit {
         .subscribe((data) => {
           this.user = data;
           this.api.getUserSounds(this.user._id).subscribe((data) =>{
+            console.log(data)
             this.sounds = data;
           })
         });

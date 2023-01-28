@@ -31,14 +31,9 @@
       </ion-col>
     </ion-row>
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
-      <ion-col class="soundPlayer">
-        <app-sound-player [category]="sound.category.name" [showCategory]="true"
-          [soundId]="sound._id"></app-sound-player>
-      </ion-col>
-      <ion-col class="soundPlayer">
-        <app-sound-player [category]="sound.category.name" [showCategory]="true"
-          [soundId]="sound._id"></app-sound-player>
-      </ion-col>
+        <ion-col class="soundPlayer">
+          <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
