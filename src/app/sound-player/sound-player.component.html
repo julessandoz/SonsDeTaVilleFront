@@ -10,11 +10,12 @@
     <div class="category" *ngIf="showCategory">
       <app-category-button [categoryName]="category" [backgroundColor]="'red'"></app-category-button>
     </div>
-  </div>
-  <div (click)="sendSoundId(); openSoundPage()">
-      <p>
+    <div class="commentContainer" (click)="sendSoundId(); openSoundPage()">
+      <div class="commentButton">
         <ion-icon name="chatbox-outline"></ion-icon>
-        Commenter
-      </p>
+        <p><b>Commenter</b></p>
+      </div>
   </div>
+  </div>
+  
 </div>

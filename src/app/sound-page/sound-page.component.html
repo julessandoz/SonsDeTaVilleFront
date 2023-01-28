@@ -27,16 +27,16 @@
       <ion-col>
         <h2><b>{{sound.comments.length}} commentaires</b></h2>
         <ion-input type="text" placeholder="Commenter en tant que {{user?.username}}" [(ngModel)]="newComment"></ion-input>
-        <ion-button [disabled]="!newComment" (click)="createComment(recievedSoundId, newComment)">
+        <ion-button id="postButton" [disabled]="!newComment" (click)="createComment(recievedSoundId, newComment)">
           Poster
         </ion-button>
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let comment of sound.comments" >
-      <ion-col>
+      <ion-col >
         <b><p>{{comment.author}}</p></b>
         <p>{{comment.comment}}</p>
-        <p>{{comment.date | date:'dd.MM.yyyy'}}</p>
+        <p class="commentDate">{{comment.date | date:'dd.MM.yyyy'}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

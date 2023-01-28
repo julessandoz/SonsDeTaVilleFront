@@ -33,3 +33,17 @@
 // .audio-player{
 //     width: 70vw;
 // }
+
+.commentButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    margin-left: 70px;
+    color: #90323D;
+
+    p{
+        margin-left: 5px;
+    }
+}
