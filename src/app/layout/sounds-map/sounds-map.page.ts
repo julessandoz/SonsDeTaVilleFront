@@ -24,8 +24,8 @@ export class SoundsMapPage implements OnInit {
   selectedDate: string;
   chosenCategory: string = null;
   categoryId:string;
-  selectedDistance: number = 0;
-  chosenDistance: number = 0;
+  selectedDistance: number = 1;
+  chosenDistance: number = 1;
   datePickerOn: boolean = false;
   selectedCategory:string = null;
   categories: Category[] = [];
@@ -100,6 +100,7 @@ export class SoundsMapPage implements OnInit {
   }
 
   async confirmFilter(){
+    console.log('hllo')
     this.chosenCategory = this.selectedCategory;
     this.chosenDistance = this.selectedDistance * 1000;
     this.chosenDate = this.selectedDate.slice(0,10);
@@ -122,6 +123,7 @@ export class SoundsMapPage implements OnInit {
 
     this.api.getFilteredSounds(params)
     .subscribe((data) =>{
+      console.log(data)
       this.sounds = data as Sound[]
     })
   }
@@ -155,8 +157,8 @@ export class SoundsMapPage implements OnInit {
   defaultFilter() {
     this.chosenCategory = null;;
     this.categoryId = null;
-    this.chosenDistance = 0;
-    this.selectedDistance = 0;
+    this.chosenDistance = 1;
+    this.selectedDistance = 1;
     this.selectedCategory = null;
     this.selectedDate = new Date().toISOString();
 

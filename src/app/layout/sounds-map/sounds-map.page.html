@@ -59,31 +59,36 @@
       <ion-col>
         <ion-button (click)="datePickerOn = !datePickerOn">
           <ion-icon name="calendar-outline"></ion-icon>
-          {{chosenDate | date:'dd.MM.yyyy'}}
+          {{selectedDate | date:'dd.MM.yyyy'}}
         </ion-button>
       </ion-col>
       <ion-col id="kmCol">
-          <b>{{chosenDistance}} km</b>
+          <b>{{selectedDistance}} km</b>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-datetime displayFormat="DD/MM/YYYY" *ngIf="datePickerOn" [(ngModel)]="chosenDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" *ngIf="datePickerOn" [(ngModel)]="selectedDate"></ion-datetime>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8">
-        <ion-range [(ngModel)]="chosenDistance" min="0" max="30"></ion-range>
+        <ion-range [(ngModel)]="selectedDistance" min="1" max="30"></ion-range>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col *ngFor="let category of categories" size="4">
-          <app-category-button [categoryName]="category.name" [backgroundColor]="'white'" (click)="chosenCategory = category.name" ></app-category-button>
+          <app-category-button [categoryName]="category.name" [backgroundColor]="'white'" (click)="selectedCategory = category.name; categoryId = category._id" ></app-category-button>
       </ion-col>
     </ion-row>
     <ion-row id="filterButtons">
       <ion-col>
-        <ion-button (click)="filterOn = false">
+        <ion-button fill="outline" (click)="filterOn = false; defaultFilter()">
+          Réinitialiser
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="filterOn = false; confirmFilter()">
           Valider
         </ion-button>
       </ion-col>
