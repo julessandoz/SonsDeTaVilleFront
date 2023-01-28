@@ -1,3 +1,4 @@
+import { LoadingController } from '@ionic/angular';
 import { Sound } from './../../models/sound';
 import { Category } from './../../models/category';
 import { Component, importProvidersFrom, OnInit } from '@angular/core';
@@ -40,8 +41,10 @@ export class SoundsMapPage implements OnInit {
   userMarker: Marker;
   selectedSound: Sound;
   selectedSoundMarker: HTMLElement;
+  soundReady: boolean = false;
+  loader: any;
 
-  constructor(private http: HttpClient, private api:ApiCallService) {
+  constructor(private http: HttpClient, private api:ApiCallService, private loadingCtrl: LoadingController) {
     this.getUserLocation();
     this.userMarker = new Marker([0, 0], { icon: this.userIcon });
     this.http
@@ -68,6 +71,8 @@ export class SoundsMapPage implements OnInit {
   }
 
   ngOnInit() {
+    // request permission to use location on iOS
+    Geolocation.requestPermissions()
     this.mapOptions = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -117,7 +122,6 @@ export class SoundsMapPage implements OnInit {
 
     this.api.getFilteredSounds(params)
     .subscribe((data) =>{
-      console.log(data)
       this.sounds = data as Sound[]
     })
   }
@@ -128,7 +132,7 @@ export class SoundsMapPage implements OnInit {
     this.selectedDate = this.chosenDate;
   }
 
-  ionViewDiresetDEnter() {
+  ionViewDidEnter() {
     this.locationInterval = setInterval(() => {
       this.getUserLocation().then((coordinates)=>{
         this.currentLocation = coordinates;
@@ -180,17 +184,26 @@ export class SoundsMapPage implements OnInit {
     setTimeout(() => map.invalidateSize(), 0);
   }
 
-  soundMarkerClick(markerElement: HTMLElement, sound) {
+  async soundMarkerClick(markerElement: HTMLElement, sound) {
+    this.loader = await this.loadingCtrl.create({
+      message: 'Chargement du son...',
+      duration: 20000,
+      spinner: 'dots',
+    });
+    this.loader.present();
     this.selectedSound = sound;
     this.selectedSoundMarker = markerElement;
     if (this.isMapVisible && this.selectedSound){
-      console.log('ok')
-      console.log(this.selectedSound)
     }
     this.map.setView([sound.location.coordinates[0], sound.location.coordinates[1]], 20);
     markerElement.style.border = '0px';
     markerElement.style.backgroundColor = '#90323D';
     markerElement.style.color= 'white';
+  }
+
+  finishedLoading() {
+    this.soundReady = true;
+    this.loader.dismiss();
   }
 
   closeSound() {
@@ -200,6 +213,7 @@ export class SoundsMapPage implements OnInit {
       this.selectedSoundMarker.style.color= '#90323D';
       this.selectedSoundMarker = null;
       this.selectedSound = null;
+      this.soundReady = false;
     }
   }
 
