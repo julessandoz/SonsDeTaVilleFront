@@ -40,7 +40,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
       scrollParent: false,
       barWidth: 5,
       // fillParent: true,
-      barHeight: 1.5,
+      barHeight: 1.25,
     });
     if (this.soundData) {
       this.audio =  new Audio(`data:audio/wav;base64,${this.soundData}`);

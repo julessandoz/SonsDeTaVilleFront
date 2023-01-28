@@ -60,7 +60,10 @@
         </ion-button>
       </ion-col>
       <ion-col id="kmCol">
-          <b>{{selectedDistance}} km</b>
+          <div id="displayDistance">
+            <ion-icon name="location-outline"></ion-icon>
+            <p><b>{{selectedDistance}} km</b></p>
+          </div>
       </ion-col>
     </ion-row>
     <ion-row>
