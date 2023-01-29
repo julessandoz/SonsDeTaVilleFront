@@ -78,7 +78,7 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col *ngFor="let category of categories" size="4">
-          <app-category-button [categoryName]="category.name" [backgroundColor]="'white'" (click)="selectedCategory = category.name; categoryId = category._id" ></app-category-button>
+          <app-category-button class="category-filter" [id]="category.name" [categoryName]="category.name" [backgroundColor]="'white'" (click)="clickedCategory(category)" ></app-category-button>
       </ion-col>
     </ion-row>
     <ion-row id="filterButtons">

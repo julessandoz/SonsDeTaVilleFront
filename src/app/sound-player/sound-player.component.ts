@@ -33,7 +33,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
       container: `#${this.elementId}`,
       waveColor: '#040303',
       progressColor: '#90323D',
-      cursorColor: '#ffffff',
+      cursorColor: 'transparent',
       scrollParent: false,
       barWidth: 5,
       // fillParent: true,

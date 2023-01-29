@@ -164,6 +164,29 @@ export class SoundsMapPage implements OnInit {
     })
   }
 
+  clickedCategory(category: Category) {
+    const clickedElement: any = document.querySelector(`#${category.name}`);
+    const allCategoryElements = document.querySelectorAll('.category-filter');
+    if (this.selectedCategory !== category.name) {
+      allCategoryElements.forEach((element: any) => {
+        element.children[0].style.border = '';
+        element.children[0].style.color = '';
+        element.children[0].style.backgroundColor = '';
+        });
+      clickedElement.children[0].style.border = '2px solid #90323D';
+      clickedElement.children[0].style.color = 'white';
+      clickedElement.children[0].style.backgroundColor = '#90323D';
+      this.selectedCategory = category.name; 
+      this.categoryId = category._id;
+    } else {
+      clickedElement.children[0].style.border = '';
+      clickedElement.children[0].style.color = '';
+      clickedElement.children[0].style.backgroundColor = '';
+      this.selectedCategory = null;
+      this.categoryId = null;
+    }
+  }
+
 
   async getUserLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
