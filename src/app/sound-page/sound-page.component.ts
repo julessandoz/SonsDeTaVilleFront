@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { SoundPlayerComponent } from '../sound-player/sound-player.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -23,7 +23,7 @@ export class SoundPageComponent implements OnInit {
   constructor(private auth: AuthService, private api:ApiCallService) { }
 
 
-  
+
 
   ngOnInit() {
 
@@ -37,6 +37,13 @@ export class SoundPageComponent implements OnInit {
       this.user = data;
     })
 
+  }
+
+  ngOnChanges(){
+    this.api.getSoundById(this.recievedSoundId)
+    .subscribe(data =>{
+      this.sound = data as Sound
+    })
   }
 
   createComment(soundId, newComment){
