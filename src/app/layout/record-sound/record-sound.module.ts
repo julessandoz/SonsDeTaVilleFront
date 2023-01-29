@@ -10,7 +10,6 @@ import { IonicModule } from '@ionic/angular';
 import { RecordSoundPageRoutingModule } from './record-sound-routing.module';
 
 import { RecordSoundPage } from './record-sound.page';
-import { CommentComponent } from 'src/app/comment/comment.component';
 
 @NgModule({
   imports: [
@@ -22,6 +21,6 @@ import { CommentComponent } from 'src/app/comment/comment.component';
     SoundPlayerModule,
     CategoryButtonModule
   ],
-  declarations: [RecordSoundPage, CommentComponent]
+  declarations: [RecordSoundPage]
 })
 export class RecordSoundPageModule {}

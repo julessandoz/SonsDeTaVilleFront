@@ -1,17 +1,11 @@
-<div *ngFor="let comment of comments" class="comment" :id="{{comment._id}}">
-  <div class="comment-author">
+<div class="comment" :id="{{comment._id}}">
+  <div class="comment-author" (click)="seeAuthorProfile(comment.author)">
     {{ comment.author.username }}
   </div>
   <div class="comment-body">
     {{ comment.comment }}
   </div>
-  <div class="comment-date">
-    29.03
+  <div *ngIf="commentDate" class="comment-date">
+    {{ commentDate }}
   </div>
 </div>
-
-<!-- <ul>
-  <li *ngFor="let comment of comments">
-    {{ comment.comment }} - {{ comment.author.username }}
-  </li>
-</ul> -->

@@ -1,8 +1,9 @@
+import { ErrorAlertService } from './../error-alert.service';
 import { RegisterRequest } from './../models/register-request';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ReplaySubject, Observable, from } from "rxjs";
-import { delayWhen, map } from "rxjs/operators";
+import { catchError, delayWhen, map } from "rxjs/operators";
 import { Storage } from "@ionic/storage";
 
 import { AuthResponse } from "../models/auth-response";
@@ -18,7 +19,7 @@ import { RegisterResponse } from '../models/register-response';
 export class AuthService {
   #auth$: ReplaySubject<AuthResponse | undefined>;
 
-  constructor(private http: HttpClient, private storage: Storage) {
+  constructor(private http: HttpClient, private storage: Storage, private errorAlert: ErrorAlertService) {
     this.#auth$ = new ReplaySubject(1);
     this.storage.get('auth').then((auth) => {
       // Emit the loaded value into the observable stream.
@@ -54,6 +55,10 @@ export class AuthService {
         this.#auth$.next(auth);
         console.log(`User ${auth.user.email} logged in`);
         return auth.user;
+      }),
+      catchError((error) => {
+        this.errorAlert.displayUserLoginErrorAlert(error);
+        throw error;
       })
     );
   }
@@ -63,6 +68,10 @@ export class AuthService {
     return this.http.post<RegisterResponse>(registerUrl, registerRequest).pipe(
       map((response) => {
         return response;
+      }),
+      catchError((error) => {
+        this.errorAlert.displayUserRegistrationErrorAlert(error);
+        throw error;
       })
     );
   }

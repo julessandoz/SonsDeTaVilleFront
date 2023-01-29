@@ -1,0 +1,38 @@
+<ion-content *ngIf="user && !soundPageVisible">
+  <ion-row *ngIf="showCloseBtn" >
+    <ion-col class="ion-justify-content-start">
+      <ion-button fill="clear" (click)="closeProfile()" >
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-text-center">
+    <ion-col>
+      <h1>{{user?.username}}</h1>
+    </ion-col>
+  </ion-row>
+  <ion-grid *ngIf="sounds" class="sounds-list-container">
+    <ion-row class="ion-text-left ion-margin-start">
+      <ion-col>
+        <h2>Activité</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-text-left ion-margin-start">
+      <ion-col>
+        <p>{{user?.soundsPosted}} sons</p>
+      </ion-col>
+      <ion-col>
+        <p>{{user?.commentsPosted}} commentaires</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="soundsElement" *ngFor="let sound of sounds">
+        <ion-col class="soundPlayer">
+          <app-sound-player (displaySoundPage)="displaySoundPage($event)" [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-content class="soundDetail" *ngIf="soundPageVisible">
+  <app-sound-page [soundId]="soundPageSoundId" (displaySoundPage)="displaySoundPage($event)"></app-sound-page>
+ </ion-content>

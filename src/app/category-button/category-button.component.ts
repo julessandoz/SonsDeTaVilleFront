@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { ErrorAlertService } from './../error-alert.service';
+import { ApiCallService } from 'src/app/api-call.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category';
 
@@ -8,21 +9,26 @@ import { Category } from 'src/app/models/category';
   styleUrls: ['./category-button.component.scss'],
 })
 export class CategoryButtonComponent implements OnInit {
-
   @Input() categoryName: string;
   @Input() backgroundColor: string; // can be red or white
 
   bgColor?: string;
   category?: Category;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private api: ApiCallService,
+    private errorAlert: ErrorAlertService
+  ) {}
 
   ngOnInit() {
     this.bgColor = this.backgroundColor === 'red' ? 'red' : 'white';
-    this.http.get(`https://sons-de-ta-ville.onrender.com/categories/${this.categoryName}`).subscribe(data => {
-      this.category = data as Category;
-    })
+    this.api.getCategoryByName(this.categoryName).subscribe(
+      (data) => {
+        this.category = data as Category;
+      },
+      (error) => {
+        this.errorAlert.displayCategoryErrorAlert(error);
+      }
+    );
   }
-
 }

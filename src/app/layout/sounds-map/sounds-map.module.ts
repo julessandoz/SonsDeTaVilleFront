@@ -10,7 +10,7 @@ import { SoundsMapPage } from './sounds-map.page';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet'
 import { SoundPlayerModule } from 'src/app/sound-player/sound-player.module';
 import { CategoryButtonModule } from 'src/app/category-button/category-button.module';
-import { SoundPageModule } from 'src/app/sound-page/sound-page.module';
+import { SoundUserPageModule } from 'src/app/sound-user-page/sound-user-page.module';
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { SoundPageModule } from 'src/app/sound-page/sound-page.module';
     LeafletModule,
     SoundPlayerModule,
     CategoryButtonModule,
-    SoundPageModule
+    SoundUserPageModule
   ],
   declarations: [SoundsMapPage]
 

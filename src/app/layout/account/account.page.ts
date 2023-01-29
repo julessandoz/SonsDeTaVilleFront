@@ -1,3 +1,4 @@
+import { ErrorAlertService } from './../../error-alert.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -29,22 +30,29 @@ export class AccountPage implements OnInit {
     private auth: AuthService,
     // Inject the router
     private router: Router,
-    private http: HttpClient,
-    private api: ApiCallService
+    private api: ApiCallService,
+    private errorAlert: ErrorAlertService
   ) {}
 
   ngOnInit() {
     this.auth.getUser$().subscribe((data) => {
-      this.http
-        .get(`https://sons-de-ta-ville.onrender.com/users/${data.username}`)
-        .subscribe((data) => {
+      this.api.getUserByUsername(data.username).subscribe(
+        (data) => {
           this.user = data;
-          this.api.getUserSounds(this.user._id).subscribe((data) =>{
-            console.log(data)
-            this.sounds = data;
-          })
-        });
-    })
+          this.api.getUserSounds(this.user._id).subscribe(
+            (data) => {
+              this.sounds = data;
+            },
+            (error) => {
+              this.errorAlert.displaySoundListErrorAlert(error);
+            }
+          );
+        },
+        (error) => {
+          this.errorAlert.displayUserErrorAlert(error);
+        }
+      );
+    });
   }
 
   logOut() {
@@ -71,23 +79,22 @@ export class AccountPage implements OnInit {
     newPassword: string,
     confirmNewPassword: string
   ) {
-    const data = { email: this.newEmail, password: this.newPassword };
+    if (!this.checkPasswords(newPassword, confirmNewPassword)) {
+      this.errorAlert.displayPassowrdsDontMatchErrorAlert();
+      return;
+    }
+    const data = { email: newEmail, password: newPassword };
 
-    this.http
-      .patch(`https://sons-de-ta-ville.onrender.com/users/${username}`, data)
-      .subscribe({
-        /* next: () => this.router.navigateByUrl('account'), */
-        error: (err) => {
-          if (err.status === 400) {
-            this.emailTaken = true;
-          } else {
-            this.badPassword = true;
-          }
-          console.warn(`Registration failed: ${err.message}`);
-          console.log(err.error);
-        },
-      });
+    this.api.updateUser(username, data).subscribe({
+      error: (err) => {
+        if (err.status === 400) {
+          this.emailTaken = true;
+        } else {
+          this.badPassword = true;
+        }
+      },
+    });
 
-      location.reload();
+    location.reload();
   }
 }

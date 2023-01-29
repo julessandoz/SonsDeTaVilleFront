@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="!showUserProfile">
   <ion-grid *ngIf="sound" >
     <ion-row>
       <ion-col class="ion-justify-content-start">
@@ -8,7 +8,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="ion-margin-start">
+      <ion-col class="">
         <app-sound-player  *ngIf="soundId && sound"   [category]="sound.category.name" [showCommentBtn]="false" [showCategory]="true" [soundId]="soundId">
         </app-sound-player>
       </ion-col>
@@ -32,12 +32,9 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let comment of sound.comments" >
-      <ion-col size="11" class="ion-margin-start">
-        <b><p>{{comment.author.username}}</p></b>
-        <p>{{comment.comment}}</p>
-        <p class="commentDate">{{comment.date | date:'dd.MM.yyyy'}}</p>
-      </ion-col>
-    </ion-row>
+    <app-comment *ngFor="let comment of sound.comments" [comment]="comment" (openAuthorProfile)="openAuthorProfile($event)"></app-comment>
   </ion-grid>
+</ion-content>
+<ion-content>
+  <app-user-profile *ngIf="showUserProfile" [userId]="userId" (closeUserProfile)="closeUserProfile()"></app-user-profile>
 </ion-content>

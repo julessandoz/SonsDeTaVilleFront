@@ -1,3 +1,4 @@
+import { SoundUserPageModule } from 'src/app/sound-user-page/sound-user-page.module';
 import { CategoryButtonModule } from './../../category-button/category-button.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,8 @@ import { AccountPage } from './account.page';
     IonicModule,
     AccountPageRoutingModule,
     CategoryButtonModule,
-    SoundPlayerModule
+    SoundPlayerModule,
+    SoundUserPageModule
   ],
   declarations: [AccountPage]
 })

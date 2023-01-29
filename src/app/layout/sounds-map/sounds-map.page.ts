@@ -1,7 +1,14 @@
+import { ErrorAlertService } from './../../error-alert.service';
 import { LoadingController } from '@ionic/angular';
 import { Sound } from './../../models/sound';
 import { Category } from './../../models/category';
-import { Component, importProvidersFrom, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  importProvidersFrom,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { latLng, Map, MapOptions, Marker, tileLayer, divIcon } from 'leaflet';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
@@ -27,11 +34,11 @@ export class SoundsMapPage implements OnInit {
   chosenDate: string;
   selectedDate: string;
   chosenCategory: string = null;
-  categoryId:string;
+  categoryId: string;
   selectedDistance: number = 1;
   chosenDistance: number = 1;
   datePickerOn: boolean = false;
-  selectedCategory:string = null;
+  selectedCategory: string = null;
   categories: Category[] = [];
   currentLocation: GeolocationCoordinates;
   locationInterval: any;
@@ -49,12 +56,16 @@ export class SoundsMapPage implements OnInit {
   loader: any;
   @Output() soundIdSent = new EventEmitter<boolean>();
 
-  constructor(private http: HttpClient, private api:ApiCallService, private loadingCtrl: LoadingController) {
+  constructor(
+    private http: HttpClient,
+    private api: ApiCallService,
+    private loadingCtrl: LoadingController,
+    private errorAlert: ErrorAlertService
+  ) {
     this.getUserLocation();
     this.userMarker = new Marker([0, 0], { icon: this.userIcon });
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
-      .subscribe((data) => {
+    this.api.getAllSounds().subscribe(
+      (data) => {
         this.sounds = data as Sound[];
         this.sounds.forEach((sound) => {
           const myIcon = divIcon({
@@ -68,16 +79,20 @@ export class SoundsMapPage implements OnInit {
           );
           this.mapMarkers.push(marker);
           marker.on('click', (e) => {
-            const divElement = e.sourceTarget._icon.children[0]
+            const divElement = e.sourceTarget._icon.children[0];
             this.soundMarkerClick(divElement, sound);
           });
         });
-      });
+      },
+      (error) => {
+        this.errorAlert.displaySoundListErrorAlert(error);
+      }
+    );
   }
 
   ngOnInit() {
     // request permission to use location on iOS
-    Geolocation.requestPermissions()
+    Geolocation.requestPermissions();
     this.mapOptions = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -89,27 +104,37 @@ export class SoundsMapPage implements OnInit {
       center: latLng(46.879966, 6.641524),
     };
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
-      .subscribe((data) => {
+    this.api.getAllSounds().subscribe(
+      (data) => {
         this.sounds = data as Sound[];
-      });
+      },
+      (error) => {
+        this.errorAlert.displaySoundListErrorAlert(error);
+      }
+    );
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/categories/`)
-      .subscribe((data) => {
+    this.api.getAllCategories().subscribe(
+      (data) => {
         this.categories = data as Category[];
-      });
+      },
+      (error) => {
+        this.errorAlert.displayCategoryListErrorAlert(error);
+      }
+    );
 
-      const now = new Date();
-      const twoWeeksAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate()-15);
-      this.selectedDate = twoWeeksAgo.toISOString();
+    const now = new Date();
+    const twoWeeksAgo = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() - 15
+    );
+    this.selectedDate = twoWeeksAgo.toISOString();
   }
 
-  async confirmFilter(){
+  async confirmFilter() {
     this.chosenCategory = this.selectedCategory;
     this.chosenDistance = this.selectedDistance * 1000;
-    this.chosenDate = this.selectedDate.slice(0,10);
+    this.chosenDate = this.selectedDate.slice(0, 10);
 
     let position = await this.getUserLocation();
     let params = new HttpParams();
@@ -118,23 +143,26 @@ export class SoundsMapPage implements OnInit {
     params = params.set('lng', position.longitude);
     params = params.set('rad', this.chosenDistance);
 
-
-    if(this.categoryId){
-      params = params.set('category', this.categoryId)
-    }
-    
-    if(this.chosenDate){
-      params = params.set('date', this.chosenDate)
+    if (this.categoryId) {
+      params = params.set('category', this.categoryId);
     }
 
-    this.api.getFilteredSounds(params)
-    .subscribe((data) =>{
-      console.log(data)
-      this.sounds = data as Sound[]
-    })
+    if (this.chosenDate) {
+      params = params.set('date', this.chosenDate);
+    }
+
+    this.api.getFilteredSounds(params).subscribe(
+      (data) => {
+        console.log(data);
+        this.sounds = data as Sound[];
+      },
+      (error) => {
+        this.errorAlert.displaySoundListErrorAlert(error);
+      }
+    );
   }
 
-  resetActualFilter(){
+  resetActualFilter() {
     this.selectedCategory = this.chosenCategory;
     this.selectedDistance = this.chosenDistance / 1000;
     this.selectedDate = this.chosenDate;
@@ -142,10 +170,13 @@ export class SoundsMapPage implements OnInit {
 
   ionViewDidEnter() {
     this.locationInterval = setInterval(() => {
-      this.getUserLocation().then((coordinates)=>{
+      this.getUserLocation().then((coordinates) => {
         this.currentLocation = coordinates;
-        this.userMarker.setLatLng([this.currentLocation.latitude, this.currentLocation.longitude]);
-      })
+        this.userMarker.setLatLng([
+          this.currentLocation.latitude,
+          this.currentLocation.longitude,
+        ]);
+      });
     }, 20000);
   }
 
@@ -161,17 +192,19 @@ export class SoundsMapPage implements OnInit {
   }
 
   defaultFilter() {
-    this.chosenCategory = null;;
+    this.chosenCategory = null;
     this.categoryId = null;
     this.chosenDistance = 1;
     this.selectedDistance = 1;
     this.selectedCategory = null;
     this.selectedDate = new Date('2020-01-01').toISOString();
 
-    this.api.getAllSounds()
-    .subscribe((data)=>{
-      this.sounds = data as Sound[]
-    })
+    this.api.getAllSounds().subscribe((data) => {
+      this.sounds = data as Sound[];
+    }),
+      (error) => {
+        this.errorAlert.displaySoundListErrorAlert(error);
+      };
   }
 
   clickedCategory(category: Category) {
@@ -182,11 +215,11 @@ export class SoundsMapPage implements OnInit {
         element.children[0].style.border = '';
         element.children[0].style.color = '';
         element.children[0].style.backgroundColor = '';
-        });
+      });
       clickedElement.children[0].style.border = '2px solid #90323D';
       clickedElement.children[0].style.color = 'white';
       clickedElement.children[0].style.backgroundColor = '#90323D';
-      this.selectedCategory = category.name; 
+      this.selectedCategory = category.name;
       this.categoryId = category._id;
     } else {
       clickedElement.children[0].style.border = '';
@@ -197,10 +230,14 @@ export class SoundsMapPage implements OnInit {
     }
   }
 
-
   async getUserLocation() {
+    try{
     const coordinates = await Geolocation.getCurrentPosition();
     return coordinates.coords;
+    }catch(error){
+      this.errorAlert.displayGeoLocationErrorAlert(error);
+      return {latitude: 0, longitude: 0, accuracy: 0, altitude: 0, altitudeAccuracy: 0, heading: 0, speed: 0};
+    }
   }
 
   async onMapReady(map: Map) {
@@ -211,7 +248,10 @@ export class SoundsMapPage implements OnInit {
       [this.currentLocation.latitude, this.currentLocation.longitude],
       13
     );
-    this.userMarker.setLatLng([this.currentLocation.latitude, this.currentLocation.longitude]);
+    this.userMarker.setLatLng([
+      this.currentLocation.latitude,
+      this.currentLocation.longitude,
+    ]);
     setTimeout(() => map.invalidateSize(), 0);
   }
 
@@ -224,12 +264,15 @@ export class SoundsMapPage implements OnInit {
     this.loader.present();
     this.selectedSound = sound;
     this.selectedSoundMarker = markerElement;
-    if (this.isMapVisible && this.selectedSound){
+    if (this.isMapVisible && this.selectedSound) {
     }
-    this.map.setView([sound.location.coordinates[0], sound.location.coordinates[1]], 20);
+    this.map.setView(
+      [sound.location.coordinates[0], sound.location.coordinates[1]],
+      20
+    );
     markerElement.style.border = '0px';
     markerElement.style.backgroundColor = '#90323D';
-    markerElement.style.color= 'white';
+    markerElement.style.color = 'white';
   }
 
   finishedLoading() {
@@ -241,15 +284,15 @@ export class SoundsMapPage implements OnInit {
     if (this.selectedSoundMarker && this.selectedSound) {
       this.selectedSoundMarker.style.border = '2px solid #90323D';
       this.selectedSoundMarker.style.backgroundColor = 'transparent';
-      this.selectedSoundMarker.style.color= '#90323D';
+      this.selectedSoundMarker.style.color = '#90323D';
       this.selectedSoundMarker = null;
       this.selectedSound = null;
       this.soundReady = false;
     }
   }
 
-  displaySoundPage(soundId){
-    if(this.soundPageVisible){
+  displaySoundPage(soundId) {
+    if (this.soundPageVisible) {
       this.soundPageVisible = false;
       this.soundPageSoundId = null;
     } else {
@@ -258,9 +301,8 @@ export class SoundsMapPage implements OnInit {
     }
   }
 
-
-  getSoundId(soundId){
-    console.log(soundId)
-    this.soundIdSent.emit(soundId)
+  getSoundId(soundId) {
+    console.log(soundId);
+    this.soundIdSent.emit(soundId);
   }
 }

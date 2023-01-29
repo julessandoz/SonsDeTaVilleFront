@@ -9,8 +9,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content *ngIf="!displayParam">
+<div class="user-profile" *ngIf="user">
+<app-user-profile [showCloseBtn]="false" *ngIf="!displayParam" [userId]="user._id" ></app-user-profile>
+</div>
+<!-- <ion-content *ngIf="!displayParam">
   <ion-row class="ion-text-center">
     <ion-col>
       <h1>{{user?.username}}</h1>
@@ -36,7 +38,7 @@
         </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
+</ion-content> -->
 
 <ion-button (click)="logOut()" fill="outline" expand="block"
   class="ion-text-center ion-margin-horizontal ion-width-half" *ngIf="!displayParam">

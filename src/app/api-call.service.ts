@@ -20,6 +20,13 @@ export class ApiCallService {
     );
   }
 
+  getSoundDataById(soundId) {
+    return this.http.get(
+      `https://sons-de-ta-ville.onrender.com/sounds/data/${soundId}`,
+      { responseType: 'text' }
+    );
+  }
+
   getFilteredSounds(params) {
     const options = { params: params };
     return this.http.get(
@@ -29,6 +36,12 @@ export class ApiCallService {
   }
   getAllCategories() {
     return this.http.get(`https://sons-de-ta-ville.onrender.com/categories`);
+  }
+
+  getCategoryByName(categoryName) {
+    return this.http.get(
+      `https://sons-de-ta-ville.onrender.com/categories/${categoryName}`
+    );
   }
 
   createSound(sound, categoryName: string, coordinates) {
@@ -47,9 +60,26 @@ export class ApiCallService {
     );
   }
 
+  getUserByUsername(username: string) {
+    return this.http.get(
+      `https://sons-de-ta-ville.onrender.com/users/${username}`
+    );
+  }
+
+  getUserById(userId: string) {
+    return this.http.get(`https://sons-de-ta-ville.onrender.com/users/id/${userId}`);
+  }
+
   getUserSounds(userId: String) {
     return this.http.get(
       `https://sons-de-ta-ville.onrender.com/sounds/?userId=${userId}`
+    );
+  }
+
+  updateUser(username, data) {
+    return this.http.patch(
+      `https://sons-de-ta-ville.onrender.com/users/${username}`,
+      data
     );
   }
 
@@ -58,6 +88,12 @@ export class ApiCallService {
     return this.http.post(
       `https://sons-de-ta-ville.onrender.com/comments`,
       body
+    );
+  }
+
+  getCommentsBySoundId(soundId) {
+    return this.http.get(
+      `https://sons-de-ta-ville.onrender.com/comments?sound=${soundId}`
     );
   }
 }

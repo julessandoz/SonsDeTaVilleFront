@@ -1,7 +1,15 @@
-import { Component, Input, OnInit, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
+import { ErrorAlertService } from './../error-alert.service';
+import { ApiCallService } from 'src/app/api-call.service';
+import {
+  Component,
+  Input,
+  OnInit,
+  AfterViewInit,
+  ElementRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sound-player',
@@ -9,11 +17,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./sound-player.component.scss'],
 })
 export class SoundPlayerComponent implements OnInit, AfterViewInit {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private api: ApiCallService,
+    private errorAlert: ErrorAlertService
+  ) {}
   wavesurfer: WaveSurfer;
-  isPlaying = false
+  isPlaying = false;
   duration: number;
   @Input() category: string;
   @Input() soundId: any;
@@ -27,11 +36,11 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
   elementId: string;
 
-  ngOnInit(){
-    this.elementId = `id${this.soundId}`
+  ngOnInit() {
+    this.elementId = `id${this.soundId}`;
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.wavesurfer = WaveSurfer.create({
       container: `#${this.elementId}`,
       waveColor: '#040303',
@@ -43,16 +52,19 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
       barHeight: 0.75,
     });
     if (this.soundData) {
-      this.audio =  new Audio(`data:audio/wav;base64,${this.soundData}`);
+      this.audio = new Audio(`data:audio/wav;base64,${this.soundData}`);
       this.wavesurfer.load(this.audio.attributes.src.value);
     } else {
-      this.http.get(`https://sons-de-ta-ville.onrender.com/sounds/data/${this.soundId}`, {responseType: 'text'} ).subscribe((data) => {
-      this.audio =  new Audio(`data:audio/wav;base64,${data}`);
-      this.wavesurfer.load(this.audio.attributes.src.value);
-      }
-    )
+      this.api.getSoundDataById(this.soundId).subscribe(
+        (data) => {
+          this.audio = new Audio(`data:audio/wav;base64,${data}`);
+          this.wavesurfer.load(this.audio.attributes.src.value);
+        },
+        (error) => {
+          this.errorAlert.displaySoundDataErrorAlert(error);
+        }
+      );
     }
-    
 
     this.wavesurfer.on('ready', () => {
       this.soundLoaded.emit(true);
@@ -63,12 +75,12 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  playPause(){
+  playPause() {
     this.wavesurfer.playPause();
     this.isPlaying = this.wavesurfer.isPlaying();
   }
 
-  openSoundPage(soundId: string){
+  openSoundPage(soundId: string) {
     this.displaySoundPage.emit(soundId);
   }
 }
