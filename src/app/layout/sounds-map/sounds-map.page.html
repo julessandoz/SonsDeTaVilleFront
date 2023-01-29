@@ -1,15 +1,15 @@
-<ion-header *ngIf="!filterOn && !sounPageVisible" >
-  <ion-segment value="custom">
-    <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
+<ion-header>
+  <ion-segment value="map" (ionChange)="isMapVisible =! isMapVisible">
+    <ion-segment-button value="map">
       <ion-label>Carte</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="segment" (click)="isMapVisible = !isMapVisible">
+    <ion-segment-button value="list">
       <ion-label>Liste</ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
 
-<ion-content class="content" *ngIf="!filterOn && !sounPageVisible">
+<ion-content class="content" *ngIf="!filterOn && !soundPageVisible">
   <ion-chip class="center-chip" *ngIf="isMapVisible" (click)="centerViewOnUser()">
     <ion-icon name="navigate-circle" color="white"></ion-icon>
     <ion-label>Centrer sur ma position</ion-label>
@@ -37,13 +37,13 @@
     <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
       <ion-col class="soundPlayer">
-        <app-sound-player (soundIdSent)="getSoundId($event)" (displaySoundPage)="displaySoundPage()"  [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        <app-sound-player (displaySoundPage)="displaySoundPage($event)"  [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-content *ngIf="filterOn">
+<ion-content class="filters" *ngIf="filterOn">
   <ion-grid>
     <ion-row >
       <ion-col class="ion-justify-content-start">
@@ -68,7 +68,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-datetime displayFormat="DD/MM/YYYY" *ngIf="datePickerOn" [(ngModel)]="selectedDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" presentation="date" value="2020-01-01" *ngIf="datePickerOn" [(ngModel)]="selectedDate"></ion-datetime>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
@@ -97,6 +97,6 @@
 </ion-content>
 
 
- <ion-content *ngIf="sounPageVisible">
-  <app-sound-page (soundIdSent)="getSoundId($event)" (displaySoundPage)="displaySoundPage()"></app-sound-page>
+ <ion-content class="soundDetail" *ngIf="soundPageVisible">
+  <app-sound-page [soundId]="soundPageSoundId" (displaySoundPage)="displaySoundPage($event)"></app-sound-page>
  </ion-content>

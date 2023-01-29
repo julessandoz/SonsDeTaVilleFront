@@ -17,7 +17,7 @@ export class SoundPageComponent implements OnInit {
   sound:Sound;
   user: User
   newComment: string;
-  recievedSoundId: string = '638da12d40ae1f0493231fcc';
+  @Input() soundId: string;
   @Output() displaySoundPage = new EventEmitter<boolean>();
 
   constructor(private auth: AuthService, private api:ApiCallService) { }
@@ -26,8 +26,7 @@ export class SoundPageComponent implements OnInit {
   
 
   ngOnInit() {
-
-    this.api.getSoundById(this.recievedSoundId)
+    this.api.getSoundById(this.soundId)
     .subscribe(data =>{
       this.sound = data as Sound
     })
@@ -47,11 +46,6 @@ export class SoundPageComponent implements OnInit {
       }
     })
     this.newComment = null;
-  }
-
-  getSoundId(soundId){
-    this.recievedSoundId  = soundId;
-    console.log(soundId)
   }
 
   closeSoundPage(){

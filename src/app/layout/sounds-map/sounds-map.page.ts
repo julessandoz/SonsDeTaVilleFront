@@ -17,7 +17,8 @@ import { SoundPageComponent } from 'src/app/sound-page/sound-page.component';
 export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
   isMapVisible: boolean = true;
-  sounPageVisible: boolean = false;
+  soundPageVisible: boolean = false;
+  soundPageSoundId: string;
   sounds: Sound[] = [];
   soundId: string;
 
@@ -100,7 +101,9 @@ export class SoundsMapPage implements OnInit {
         this.categories = data as Category[];
       });
 
-    this.selectedDate = new Date().toISOString();
+      const now = new Date();
+      const twoWeeksAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate()-15);
+      this.selectedDate = twoWeeksAgo.toISOString();
   }
 
   async confirmFilter(){
@@ -163,7 +166,7 @@ export class SoundsMapPage implements OnInit {
     this.chosenDistance = 1;
     this.selectedDistance = 1;
     this.selectedCategory = null;
-    this.selectedDate = new Date().toISOString();
+    this.selectedDate = new Date('2020-01-01').toISOString();
 
     this.api.getAllSounds()
     .subscribe((data)=>{
@@ -245,8 +248,14 @@ export class SoundsMapPage implements OnInit {
     }
   }
 
-  displaySoundPage(){
-    this.sounPageVisible = !this.sounPageVisible;
+  displaySoundPage(soundId){
+    if(this.soundPageVisible){
+      this.soundPageVisible = false;
+      this.soundPageSoundId = null;
+    } else {
+      this.soundPageVisible = true;
+      this.soundPageSoundId = soundId;
+    }
   }
 
 

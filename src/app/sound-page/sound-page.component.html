@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid>
+  <ion-grid *ngIf="sound" >
     <ion-row>
       <ion-col class="ion-justify-content-start">
         <ion-button fill="clear" (click)="closeSoundPage()" >
@@ -9,7 +9,7 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-margin-start">
-        <app-sound-player  *ngIf="recievedSoundId"   [category]="'Drôle'" [showCategory]="true" [soundId]="recievedSoundId">
+        <app-sound-player  *ngIf="soundId && sound"   [category]="sound.category.name" [showCommentBtn]="false" [showCategory]="true" [soundId]="soundId">
         </app-sound-player>
       </ion-col>
     </ion-row>
@@ -27,14 +27,14 @@
       <ion-col size="11" class="ion-margin-start">
         <h2><b>{{sound.comments.length}} commentaires</b></h2>
         <ion-input type="text" placeholder="Commenter en tant que {{user?.username}}" [(ngModel)]="newComment"></ion-input>
-        <ion-button id="postButton" [disabled]="!newComment" (click)="createComment(recievedSoundId, newComment)">
+        <ion-button id="postButton" [disabled]="!newComment" (click)="createComment(soundId, newComment)">
           Poster
         </ion-button>
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let comment of sound.comments" >
       <ion-col size="11" class="ion-margin-start">
-        <b><p>{{comment.author}}</p></b>
+        <b><p>{{comment.author.username}}</p></b>
         <p>{{comment.comment}}</p>
         <p class="commentDate">{{comment.date | date:'dd.MM.yyyy'}}</p>
       </ion-col>

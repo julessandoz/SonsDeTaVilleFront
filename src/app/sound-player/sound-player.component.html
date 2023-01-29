@@ -10,7 +10,7 @@
     <div class="category" *ngIf="showCategory">
       <app-category-button [categoryName]="category" [backgroundColor]="'red'"></app-category-button>
     </div>
-    <div class="commentContainer" (click)="sendSoundId(); openSoundPage()">
+    <div class="commentContainer" *ngIf="showCommentBtn" (click)="openSoundPage(soundId)">
       <div class="commentButton">
         <ion-icon name="chatbubble-ellipses"></ion-icon>
         <p><b>Commenter</b></p>
