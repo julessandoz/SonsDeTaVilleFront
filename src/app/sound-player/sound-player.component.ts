@@ -115,7 +115,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
             console.log('Son supprimé');
             setTimeout(() => {
               location.reload();
-            }, 1000);
+            }, 500);
           },
         },
       ],

@@ -105,7 +105,7 @@ export class RecordSoundPage implements OnInit {
             this.postSound();
             setTimeout(() => {
               location.reload();
-            }, 1000);
+            }, 500);
           },
         },
       ],
