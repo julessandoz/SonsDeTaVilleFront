@@ -80,5 +80,6 @@ export class AuthService {
 
     this.storage.remove('auth');
     console.log('User logged out');
+    location.reload();
   }
 }

@@ -64,3 +64,19 @@
         font-weight: 500;
     }
 }
+
+.deleteButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    margin-left: 150px;
+    color: #90323D;
+    cursor: pointer;
+
+    p{
+        margin-left: 5px;
+        font-weight: 500;
+    }
+}

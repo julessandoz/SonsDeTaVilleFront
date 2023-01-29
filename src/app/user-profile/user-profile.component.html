@@ -26,7 +26,10 @@
       </ion-col>
     </ion-row>
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
-        <ion-col class="soundPlayer">
+        <ion-col class="soundPlayer" *ngIf="userId !== loggedUser._id">
+          <app-sound-player (displaySoundPage)="displaySoundPage($event)" [showDeleteBtn]="false" [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        </ion-col>
+        <ion-col class="soundPlayer" *ngIf="userId === loggedUser._id">
           <app-sound-player (displaySoundPage)="displaySoundPage($event)" [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
         </ion-col>
     </ion-row>

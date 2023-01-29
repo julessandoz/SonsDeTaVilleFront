@@ -60,6 +60,10 @@ export class ApiCallService {
     );
   }
 
+  deleteSound(soundId: string){
+    return this.http.delete(`https://sons-de-ta-ville.onrender.com/sounds/${soundId}`);
+  }
+
   getUserByUsername(username: string) {
     return this.http.get(
       `https://sons-de-ta-ville.onrender.com/users/${username}`

@@ -9,7 +9,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<div class="user-profile" *ngIf="user">
+<div class="user-profile" *ngIf="user && !displayParam">
 <app-user-profile [showCloseBtn]="false" *ngIf="!displayParam" [userId]="user._id" ></app-user-profile>
 </div>
 <!-- <ion-content *ngIf="!displayParam">

@@ -23,7 +23,7 @@
   </div>
   <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
     <div class="player">
-      <app-sound-player (displaySoundPage)="displaySoundPage($event)" [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id" (soundLoaded)="finishedLoading()"></app-sound-player>
+      <app-sound-player (displaySoundPage)="displaySoundPage($event)" [showDeleteBtn]="false" [category]="selectedSound.category.name" [showCategory]="false" [soundId]="selectedSound._id" (soundLoaded)="finishedLoading()"></app-sound-player>
     </div>
   </div>
   <ion-grid id="soundsListContainer" *ngIf="!isMapVisible && !filterOn">
@@ -42,7 +42,7 @@
     <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
       <ion-col class="soundPlayer">
-        <app-sound-player (displaySoundPage)="displaySoundPage($event)"  [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+        <app-sound-player (displaySoundPage)="displaySoundPage($event)" [showDeleteBtn]="false" [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id" ></app-sound-player>
       </ion-col>
     </ion-row>
   </ion-grid>

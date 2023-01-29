@@ -103,6 +103,9 @@ export class RecordSoundPage implements OnInit {
           cssClass: 'alert-button-confirm',
           handler: () => {
             this.postSound();
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
           },
         },
       ],

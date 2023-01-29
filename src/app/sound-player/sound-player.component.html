@@ -16,6 +16,12 @@
         <p>Commenter</p>
       </div>
   </div>
+  <div class="deleteContainer" *ngIf="showDeleteBtn" (click)="presentDeleteConfirmation()">
+    <div class="deleteButton"> 
+      <ion-icon name="trash"></ion-icon>
+      <p>Supprimer</p>
+    </div>
+  </div>
   </div>
   
 </div>

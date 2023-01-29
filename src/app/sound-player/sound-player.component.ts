@@ -10,6 +10,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-sound-player',
@@ -19,7 +20,8 @@ import WaveSurfer from 'wavesurfer.js';
 export class SoundPlayerComponent implements OnInit, AfterViewInit {
   constructor(
     private api: ApiCallService,
-    private errorAlert: ErrorAlertService
+    private errorAlert: ErrorAlertService,
+    private alertCtrl: AlertController
   ) {}
   wavesurfer: WaveSurfer;
   isPlaying = false;
@@ -29,6 +31,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   @Input() showCategory: boolean = false;
   @Input() soundData?: any;
   @Input() showCommentBtn: boolean = true;
+  @Input() showDeleteBtn: boolean = true;
   audio: any;
   @Output() soundLoaded = new EventEmitter<boolean>();
   @Output() soundIdSent = new EventEmitter<string>();
@@ -82,5 +85,42 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
 
   openSoundPage(soundId: string) {
     this.displaySoundPage.emit(soundId);
+  }
+
+  deleteSound() {
+    this.api.deleteSound(this.soundId).subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  async presentDeleteConfirmation() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmation',
+      message: 'Voulez-vous vraiment supprimer ce son?',
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirmation annulée');
+          },
+        },
+        {
+          text: 'Supprimer',
+          handler: () => {
+            this.api.deleteSound(this.soundId).subscribe((data) => {
+              console.log(data);
+            });
+            console.log('Son supprimé');
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }
