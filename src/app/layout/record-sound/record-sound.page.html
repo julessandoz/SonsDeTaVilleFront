@@ -13,7 +13,7 @@
   </div>
   <div class="category-step" *ngIf="recordedSound">
     <div class="sound-player">
-      <app-sound-player [soundData]="soundFileBase64"></app-sound-player> 
+      <app-sound-player [showCommentBtn]="false" [soundData]="soundFileBase64"></app-sound-player> 
       <!-- <ion-chip (click)="playAudio()">
         <ion-icon name="play" color="#ffffff"></ion-icon>
         <ion-label>Ecouter l'enregistrement</ion-label>

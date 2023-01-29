@@ -17,7 +17,8 @@ import { SoundPageComponent } from 'src/app/sound-page/sound-page.component';
 export class SoundsMapPage implements OnInit {
   mapOptions: MapOptions;
   isMapVisible: boolean = true;
-  sounPageVisible: boolean = false;
+  soundPageVisible: boolean = false;
+  soundPageSoundId: string;
   sounds: Sound[] = [];
   soundId: string;
 
@@ -100,7 +101,9 @@ export class SoundsMapPage implements OnInit {
         this.categories = data as Category[];
       });
 
-    this.selectedDate = new Date().toISOString();
+      const now = new Date();
+      const twoWeeksAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate()-15);
+      this.selectedDate = twoWeeksAgo.toISOString();
   }
 
   async confirmFilter(){
@@ -163,12 +166,35 @@ export class SoundsMapPage implements OnInit {
     this.chosenDistance = 1;
     this.selectedDistance = 1;
     this.selectedCategory = null;
-    this.selectedDate = new Date().toISOString();
+    this.selectedDate = new Date('2020-01-01').toISOString();
 
     this.api.getAllSounds()
     .subscribe((data)=>{
       this.sounds = data as Sound[]
     })
+  }
+
+  clickedCategory(category: Category) {
+    const clickedElement: any = document.querySelector(`#${category.name}`);
+    const allCategoryElements = document.querySelectorAll('.category-filter');
+    if (this.selectedCategory !== category.name) {
+      allCategoryElements.forEach((element: any) => {
+        element.children[0].style.border = '';
+        element.children[0].style.color = '';
+        element.children[0].style.backgroundColor = '';
+        });
+      clickedElement.children[0].style.border = '2px solid #90323D';
+      clickedElement.children[0].style.color = 'white';
+      clickedElement.children[0].style.backgroundColor = '#90323D';
+      this.selectedCategory = category.name; 
+      this.categoryId = category._id;
+    } else {
+      clickedElement.children[0].style.border = '';
+      clickedElement.children[0].style.color = '';
+      clickedElement.children[0].style.backgroundColor = '';
+      this.selectedCategory = null;
+      this.categoryId = null;
+    }
   }
 
 
@@ -222,8 +248,14 @@ export class SoundsMapPage implements OnInit {
     }
   }
 
-  displaySoundPage(){
-    this.sounPageVisible = !this.sounPageVisible;
+  displaySoundPage(soundId){
+    if(this.soundPageVisible){
+      this.soundPageVisible = false;
+      this.soundPageSoundId = null;
+    } else {
+      this.soundPageVisible = true;
+      this.soundPageSoundId = soundId;
+    }
   }
 
 

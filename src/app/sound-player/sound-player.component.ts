@@ -19,11 +19,11 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
   @Input() soundId: any;
   @Input() showCategory: boolean = false;
   @Input() soundData?: any;
+  @Input() showCommentBtn: boolean = true;
   audio: any;
   @Output() soundLoaded = new EventEmitter<boolean>();
   @Output() soundIdSent = new EventEmitter<string>();
-  @Output() displaySoundPage = new EventEmitter<boolean>();
-
+  @Output() displaySoundPage = new EventEmitter<string>();
 
   elementId: string;
 
@@ -36,11 +36,11 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
       container: `#${this.elementId}`,
       waveColor: '#040303',
       progressColor: '#90323D',
-      cursorColor: '#ffffff',
+      cursorColor: 'transparent',
       scrollParent: false,
-      barWidth: 5,
+      barWidth: 2,
       // fillParent: true,
-      barHeight: 1.25,
+      barHeight: 0.75,
     });
     if (this.soundData) {
       this.audio =  new Audio(`data:audio/wav;base64,${this.soundData}`);
@@ -68,11 +68,7 @@ export class SoundPlayerComponent implements OnInit, AfterViewInit {
     this.isPlaying = this.wavesurfer.isPlaying();
   }
 
-  sendSoundId(){
-    this.soundIdSent.emit(this.soundId); 
-  }
-
-  openSoundPage(){
-    this.displaySoundPage.emit()
+  openSoundPage(soundId: string){
+    this.displaySoundPage.emit(soundId);
   }
 }
