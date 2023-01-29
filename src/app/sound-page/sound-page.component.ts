@@ -39,7 +39,7 @@ export class SoundPageComponent implements OnInit {
   }
 
   ngOnChanges(){
-    this.api.getSoundById(this.recievedSoundId)
+    this.api.getSoundById(this.soundId)
     .subscribe(data =>{
       this.sound = data as Sound
     })

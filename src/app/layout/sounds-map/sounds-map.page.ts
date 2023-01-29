@@ -122,7 +122,7 @@ export class SoundsMapPage implements OnInit {
     if(this.categoryId){
       params = params.set('category', this.categoryId)
     }
-    
+
     if(this.chosenDate){
       params = params.set('date', this.chosenDate)
     }
@@ -167,6 +167,7 @@ export class SoundsMapPage implements OnInit {
     this.selectedDistance = 1;
     this.selectedCategory = null;
     this.selectedDate = new Date('2020-01-01').toISOString();
+    console.log('test')
 
     this.api.getAllSounds()
     .subscribe((data)=>{
@@ -186,7 +187,7 @@ export class SoundsMapPage implements OnInit {
       clickedElement.children[0].style.border = '2px solid #90323D';
       clickedElement.children[0].style.color = 'white';
       clickedElement.children[0].style.backgroundColor = '#90323D';
-      this.selectedCategory = category.name; 
+      this.selectedCategory = category.name;
       this.categoryId = category._id;
     } else {
       clickedElement.children[0].style.border = '';
