@@ -47,10 +47,11 @@ export class SoundPageComponent implements OnInit {
 
   createComment(soundId, newComment){
     this.api.createComment(soundId,newComment)
-    .subscribe({
-      error: (err)=>{
-        console.log(err)
-      }
+    .subscribe( data =>{
+      this.api.getSoundById(this.soundId)
+      .subscribe(data =>{
+        this.sound = data as Sound;
+      })
     })
     this.newComment = null;
   }

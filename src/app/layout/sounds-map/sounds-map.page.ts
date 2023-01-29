@@ -52,8 +52,7 @@ export class SoundsMapPage implements OnInit {
   constructor(private http: HttpClient, private api:ApiCallService, private loadingCtrl: LoadingController) {
     this.getUserLocation();
     this.userMarker = new Marker([0, 0], { icon: this.userIcon });
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
+    this.api.getAllSounds()
       .subscribe((data) => {
         this.sounds = data as Sound[];
         this.sounds.forEach((sound) => {
@@ -89,14 +88,12 @@ export class SoundsMapPage implements OnInit {
       center: latLng(46.879966, 6.641524),
     };
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/sounds/`)
+    this.api.getAllSounds()
       .subscribe((data) => {
         this.sounds = data as Sound[];
       });
 
-    this.http
-      .get(`https://sons-de-ta-ville.onrender.com/categories/`)
+    this.api.getAllCategories()
       .subscribe((data) => {
         this.categories = data as Category[];
       });
@@ -107,6 +104,7 @@ export class SoundsMapPage implements OnInit {
   }
 
   async confirmFilter(){
+    this.mapMarkers = [];
     this.chosenCategory = this.selectedCategory;
     this.chosenDistance = this.selectedDistance * 1000;
     this.chosenDate = this.selectedDate.slice(0,10);
@@ -132,6 +130,28 @@ export class SoundsMapPage implements OnInit {
       console.log(data)
       this.sounds = data as Sound[]
     })
+
+    this.api.getFilteredSounds(params)
+      .subscribe((data) => {
+        this.sounds = data as Sound[];
+        this.sounds.forEach((sound) => {
+          console.log(sound)
+          const myIcon = divIcon({
+            className: 'soundMarker',
+            html: `<div style="display: flex; justify-content: center; align-items: center; height: 40px; width: 40px; border: 2px solid #90323D; border-radius: 20px; color: #90323D;"><ion-icon name="${sound.category.iconName}" size="large" style="color: inherit;"></ion-icon></div>`,
+            iconSize: [32, 32],
+          });
+          const marker = new Marker(
+            [sound.location.coordinates[0], sound.location.coordinates[1]],
+            { icon: myIcon }
+          );
+          this.mapMarkers.push(marker);
+          marker.on('click', (e) => {
+            const divElement = e.sourceTarget._icon.children[0]
+            this.soundMarkerClick(divElement, sound);
+          });
+        });
+      });
   }
 
   resetActualFilter(){
@@ -173,6 +193,27 @@ export class SoundsMapPage implements OnInit {
     .subscribe((data)=>{
       this.sounds = data as Sound[]
     })
+
+    this.api.getAllSounds()
+      .subscribe((data) => {
+        this.sounds = data as Sound[];
+        this.sounds.forEach((sound) => {
+          const myIcon = divIcon({
+            className: 'soundMarker',
+            html: `<div style="display: flex; justify-content: center; align-items: center; height: 40px; width: 40px; border: 2px solid #90323D; border-radius: 20px; color: #90323D;"><ion-icon name="${sound.category.iconName}" size="large" style="color: inherit;"></ion-icon></div>`,
+            iconSize: [32, 32],
+          });
+          const marker = new Marker(
+            [sound.location.coordinates[0], sound.location.coordinates[1]],
+            { icon: myIcon }
+          );
+          this.mapMarkers.push(marker);
+          marker.on('click', (e) => {
+            const divElement = e.sourceTarget._icon.children[0]
+            this.soundMarkerClick(divElement, sound);
+          });
+        });
+      });
   }
 
   clickedCategory(category: Category) {
