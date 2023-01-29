@@ -1,4 +1,4 @@
-<ion-header *ngIf="!filterOn">
+<ion-header *ngIf="!filterOn && !sounPageVisible" >
   <ion-segment value="custom">
     <ion-segment-button value="custom" (click)="isMapVisible = !isMapVisible">
       <ion-label>Carte</ion-label>
@@ -9,7 +9,7 @@
   </ion-segment>
 </ion-header>
 
-<ion-content class="content" *ngIf="!filterOn">
+<ion-content class="content" *ngIf="!filterOn && !sounPageVisible">
   <ion-chip class="center-chip" *ngIf="isMapVisible" (click)="centerViewOnUser()">
     <ion-icon name="navigate-circle" color="white"></ion-icon>
     <ion-label>Centrer sur ma position</ion-label>
@@ -36,11 +36,8 @@
     </ion-row>
     <hr class="horizontal-line">
     <ion-row class="soundsElement" *ngFor="let sound of sounds">
-      <ion-col class="soundPlayer" *ngIf="chosenCategory !== null">
-        <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id" *ngIf="chosenCategory === sound.category.name"></app-sound-player>
-      </ion-col>
-      <ion-col class="soundPlayer" *ngIf="chosenCategory === null">
-        <app-sound-player [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
+      <ion-col class="soundPlayer">
+        <app-sound-player (soundIdSent)="getSoundId($event)" (displaySoundPage)="displaySoundPage()"  [category]="sound.category.name" [showCategory]="true" [soundId]="sound._id"></app-sound-player>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -63,7 +60,10 @@
         </ion-button>
       </ion-col>
       <ion-col id="kmCol">
-          <b>{{selectedDistance}} km</b>
+          <div id="displayDistance">
+            <ion-icon name="location-outline"></ion-icon>
+            <p><b>{{selectedDistance}} km</b></p>
+          </div>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -95,3 +95,8 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+
+ <ion-content *ngIf="sounPageVisible">
+  <app-sound-page (soundIdSent)="getSoundId($event)" (displaySoundPage)="displaySoundPage()"></app-sound-page>
+ </ion-content>
