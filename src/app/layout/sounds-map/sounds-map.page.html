@@ -14,6 +14,11 @@
     <ion-icon name="navigate-circle" color="white"></ion-icon>
     <ion-label>Centrer sur ma position</ion-label>
   </ion-chip>
+  <div class="filterBtn">
+    <ion-button *ngIf="isMapVisible" (click)="filterOn = true; defaultFilter()">
+      <ion-icon name="funnel-outline"></ion-icon>
+     </ion-button>
+   </div>
   <div *ngIf="isMapVisible" class="map" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)" [leafletLayers]="mapMarkers" (click)="closeSound()">
   </div>
   <div class="sound-player-container" *ngIf="isMapVisible && selectedSound">
@@ -30,7 +35,7 @@
     <ion-row class="ion-justify-content-end" >
       <ion-col size="3">
         <ion-button (click)="filterOn = true">
-          <ion-icon name="options-outline"></ion-icon>
+          <ion-icon name="funnel-outline"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>

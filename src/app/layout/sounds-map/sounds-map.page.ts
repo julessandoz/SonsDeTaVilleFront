@@ -131,7 +131,8 @@ export class SoundsMapPage implements OnInit {
     this.selectedDate = twoWeeksAgo.toISOString();
   }
 
-  async confirmFilter() {
+  async confirmFilter(){
+    this.mapMarkers = [];
     this.chosenCategory = this.selectedCategory;
     this.chosenDistance = this.selectedDistance * 1000;
     this.chosenDate = this.selectedDate.slice(0, 10);
@@ -143,23 +144,46 @@ export class SoundsMapPage implements OnInit {
     params = params.set('lng', position.longitude);
     params = params.set('rad', this.chosenDistance);
 
-    if (this.categoryId) {
-      params = params.set('category', this.categoryId);
+
+    if(this.categoryId){
+      params = params.set('category', this.categoryId)
     }
 
-    if (this.chosenDate) {
-      params = params.set('date', this.chosenDate);
+    if(this.chosenDate){
+      params = params.set('date', this.chosenDate)
     }
 
-    this.api.getFilteredSounds(params).subscribe(
-      (data) => {
-        console.log(data);
+    this.api.getFilteredSounds(params)
+    .subscribe((data) =>{
+      console.log(data)
+      this.sounds = data as Sound[]
+    }, (error) => {
+      this.errorAlert.displaySoundListErrorAlert(error);
+    })
+
+    this.api.getFilteredSounds(params)
+      .subscribe((data) => {
         this.sounds = data as Sound[];
-      },
-      (error) => {
+        this.sounds.forEach((sound) => {
+          console.log(sound)
+          const myIcon = divIcon({
+            className: 'soundMarker',
+            html: `<div style="display: flex; justify-content: center; align-items: center; height: 40px; width: 40px; border: 2px solid #90323D; border-radius: 20px; color: #90323D;"><ion-icon name="${sound.category.iconName}" size="large" style="color: inherit;"></ion-icon></div>`,
+            iconSize: [32, 32],
+          });
+          const marker = new Marker(
+            [sound.location.coordinates[0], sound.location.coordinates[1]],
+            { icon: myIcon }
+          );
+          this.mapMarkers.push(marker);
+          marker.on('click', (e) => {
+            const divElement = e.sourceTarget._icon.children[0]
+            this.soundMarkerClick(divElement, sound);
+          });
+        });
+      }, (error) => {
         this.errorAlert.displaySoundListErrorAlert(error);
-      }
-    );
+      })
   }
 
   resetActualFilter() {
@@ -198,13 +222,37 @@ export class SoundsMapPage implements OnInit {
     this.selectedDistance = 1;
     this.selectedCategory = null;
     this.selectedDate = new Date('2020-01-01').toISOString();
+    console.log('test')
 
-    this.api.getAllSounds().subscribe((data) => {
-      this.sounds = data as Sound[];
-    }),
-      (error) => {
+    this.api.getAllSounds()
+    .subscribe((data)=>{
+      this.sounds = data as Sound[]
+    }), (error) => {
+      this.errorAlert.displaySoundListErrorAlert(error);
+    };
+
+    this.api.getAllSounds()
+      .subscribe((data) => {
+        this.sounds = data as Sound[];
+        this.sounds.forEach((sound) => {
+          const myIcon = divIcon({
+            className: 'soundMarker',
+            html: `<div style="display: flex; justify-content: center; align-items: center; height: 40px; width: 40px; border: 2px solid #90323D; border-radius: 20px; color: #90323D;"><ion-icon name="${sound.category.iconName}" size="large" style="color: inherit;"></ion-icon></div>`,
+            iconSize: [32, 32],
+          });
+          const marker = new Marker(
+            [sound.location.coordinates[0], sound.location.coordinates[1]],
+            { icon: myIcon }
+          );
+          this.mapMarkers.push(marker);
+          marker.on('click', (e) => {
+            const divElement = e.sourceTarget._icon.children[0]
+            this.soundMarkerClick(divElement, sound);
+          });
+        });
+      }, (error) => {
         this.errorAlert.displaySoundListErrorAlert(error);
-      };
+      });
   }
 
   clickedCategory(category: Category) {

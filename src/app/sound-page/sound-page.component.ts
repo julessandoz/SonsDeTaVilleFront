@@ -48,12 +48,27 @@ export class SoundPageComponent implements OnInit {
     );
   }
 
-  createComment(soundId, newComment) {
-    this.api.createComment(soundId, newComment).subscribe({
-      error: (err) => {
-        this.errorAlert.displayCommentCreationErrorAlert(err);
-      },
-    });
+  ngOnChanges(){
+    this.api.getSoundById(this.soundId)
+    .subscribe(data =>{
+      this.sound = data as Sound
+    })
+  }
+
+  createComment(soundId, newComment){
+    this.api.createComment(soundId,newComment)
+    .subscribe( data =>{
+      this.api.getSoundById(this.soundId)
+      .subscribe(data =>{
+        this.sound = data as Sound;
+      }, 
+      (err) => {
+        this.errorAlert.displaySoundErrorAlert(err);
+      }
+      )
+    }, (err) => {
+      this.errorAlert.displayCommentCreationErrorAlert(err);
+    },), 
     this.newComment = null;
   }
 
