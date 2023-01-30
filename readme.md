@@ -39,8 +39,5 @@ Enjoy exploring sounds near you and recording your own sounds to share with the 
 - Ability to update email and password
 - Logout
 
-## Screenshots
-(Insert screenshots of the app here)
-
 ## Conclusion
 Thank you for choosing our app for your sound sharing needs. We hope you enjoy exploring and sharing sounds with other users in your area. If you have any questions or feedback, please don't hesitate to contact us. Happy listening!
